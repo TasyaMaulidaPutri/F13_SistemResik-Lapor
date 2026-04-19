@@ -33,7 +33,36 @@ namespace SISTEM_RESIK_LAPOR
                 txtPoint.Enabled = false;
             }
         }
-        
+        void LoadData()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    conn.Open();
+
+                    string query = (roleUser == "masyarakat")
+                        ? "SELECT * FROM Setoran WHERE id_user=@id"
+                        : "SELECT * FROM Setoran";
+
+                    SqlCommand cmd = new SqlCommand(query, conn);
+
+                    if (roleUser == "masyarakat")
+                        cmd.Parameters.AddWithValue("@id", idUserLogin);
+
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    dataGridView1.DataSource = dt;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+       
     }
     
 }
