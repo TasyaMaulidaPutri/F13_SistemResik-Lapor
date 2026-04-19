@@ -269,6 +269,32 @@ namespace SISTEM_RESIK_LAPOR
             LoadData();
         }
 
-       
+        private void button5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+
+                txtDeskripsi.Text = row.Cells["deskripsi"].Value.ToString();
+                txtFoto.Text = row.Cells["foto"].Value.ToString();
+                txtLokasi.Text = row.Cells["lokasi_maps"].Value.ToString();
+                cmbStatus.Text = row.Cells["status"].Value.ToString();
+            }
+        }
+
+        private void Form2_Load_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbStatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
