@@ -33,6 +33,29 @@ namespace SISTEM_RESIK_LAPOR
             }
         }
 
+        private void Form2_Load(object sender, EventArgs e)
+        {
+            conn = new SqlConnection(connString);
+
+            // isi combo status
+            cmbStatus.Items.Clear();
+            cmbStatus.Items.Add("lapor");
+            cmbStatus.Items.Add("proses");
+            cmbStatus.Items.Add("bersih");
+            cmbStatus.SelectedIndex = 0;
+
+
+            // 🔒 ROLE SETTING
+            if (roleUser == "masyarakat")
+            {
+                btnUpdate.Visible = false;
+                btnTampil.Visible = false;
+                cmbStatus.Enabled = false;
+            }
+
+            LoadData();
+        }
+
        
     }
 }
