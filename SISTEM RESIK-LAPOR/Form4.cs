@@ -45,6 +45,30 @@ namespace SISTEM_RESIK_LAPOR
             }
         }
 
-       
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Form2 f2 = new Form2(idUserLogin, roleUser);
+            f2.Show();
+        }
+
+        private void btnSetoran_Click(object sender, EventArgs e)
+        {
+            Form3 f3 = new Form3(idUserLogin, roleUser);
+            f3.Show();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Form1 login = new Form1();
+            login.Show();
+            this.Hide();
+        }
+
+        
     }
 }
