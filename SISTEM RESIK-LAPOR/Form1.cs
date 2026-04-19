@@ -80,6 +80,32 @@ namespace SISTEM_RESIK_LAPOR
 
                 SqlDataReader reader = cmd.ExecuteReader();
 
+                if (reader.Read())
+                {
+                    int idUser = Convert.ToInt32(reader["id_user"]);
+                    string role = reader["role"].ToString();
+
+                    MessageBox.Show("Login sebagai " + role);
+
+                    Form4 menu = new Form4(idUser, role);
+                    menu.Show();
+                    this.Hide();
+                }
+                else
+                {
+                    MessageBox.Show("Email atau password salah!");
+                }
+
+                reader.Close();
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        
     }
     
 }
