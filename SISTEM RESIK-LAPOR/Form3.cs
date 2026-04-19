@@ -33,6 +33,8 @@ namespace SISTEM_RESIK_LAPOR
                 txtPoint.Enabled = false;
             }
         }
+
+        
         void LoadData()
         {
             try
@@ -68,6 +70,7 @@ namespace SISTEM_RESIK_LAPOR
 
             LoadComboStatus();
             LoadData();
+            lblTotalSetoran.Text = "Total Laporan: " + HitungTotalSetoran();
 
             if (roleUser == "masyarakat")
             {
@@ -84,6 +87,44 @@ namespace SISTEM_RESIK_LAPOR
             cmbStatus.Items.Add("ditolak");
 
             cmbStatus.SelectedIndex = 0;
+        }
+
+        int HitungTotalSetoran()
+        {
+            int total = 0;
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    conn.Open();
+
+                    string query;
+
+                    if (roleUser == "masyarakat")
+                    {
+                        query = "SELECT COUNT(*) FROM Setoran WHERE id_user=@id";
+                    }
+                    else
+                    {
+                        query = "SELECT COUNT(*) FROM Setoran";
+                    }
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        if (roleUser == "masyarakat")
+                            cmd.Parameters.AddWithValue("@id", idUserLogin);
+
+                        total = (int)cmd.ExecuteScalar();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            return total;
         }
         private void label10_Click(object sender, EventArgs e)
         {
@@ -254,6 +295,12 @@ namespace SISTEM_RESIK_LAPOR
                 cmbStatus.Text = row.Cells["status_verifikasi"].Value.ToString();
             }
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            int total = HitungTotalSetoran();
+            lblTotalSetoran.Text = "Total Setoran: " + total;
         }
     }
     

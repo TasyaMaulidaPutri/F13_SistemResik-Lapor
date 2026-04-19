@@ -46,6 +46,8 @@
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.lblTotalSetoran = new System.Windows.Forms.Label();
+            this.HitungJumlahSetoran = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -216,7 +218,7 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(132, 457);
+            this.dataGridView1.Location = new System.Drawing.Point(132, 438);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 62;
             this.dataGridView1.RowTemplate.Height = 28;
@@ -224,11 +226,34 @@
             this.dataGridView1.TabIndex = 24;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
+            // lblTotalSetoran
+            // 
+            this.lblTotalSetoran.AutoSize = true;
+            this.lblTotalSetoran.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lblTotalSetoran.Location = new System.Drawing.Point(127, 611);
+            this.lblTotalSetoran.Name = "lblTotalSetoran";
+            this.lblTotalSetoran.Size = new System.Drawing.Size(141, 25);
+            this.lblTotalSetoran.TabIndex = 25;
+            this.lblTotalSetoran.Text = "Total Setoran: ";
+            // 
+            // HitungJumlahSetoran
+            // 
+            this.HitungJumlahSetoran.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.HitungJumlahSetoran.Location = new System.Drawing.Point(331, 604);
+            this.HitungJumlahSetoran.Name = "HitungJumlahSetoran";
+            this.HitungJumlahSetoran.Size = new System.Drawing.Size(102, 38);
+            this.HitungJumlahSetoran.TabIndex = 26;
+            this.HitungJumlahSetoran.Text = "Hitung";
+            this.HitungJumlahSetoran.UseVisualStyleBackColor = true;
+            this.HitungJumlahSetoran.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1186, 656);
+            this.Controls.Add(this.HitungJumlahSetoran);
+            this.Controls.Add(this.lblTotalSetoran);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.label13);
@@ -274,5 +299,7 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Label lblTotalSetoran;
+        private System.Windows.Forms.Button HitungJumlahSetoran;
     }
 }

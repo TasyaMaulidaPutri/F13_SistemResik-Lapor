@@ -46,8 +46,8 @@
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.lblTotalLaporan = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -229,34 +229,34 @@
             this.label14.TabIndex = 26;
             this.label14.Text = ":";
             // 
-            // label16
+            // button1
             // 
-            this.label16.AutoSize = true;
-            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.label16.Location = new System.Drawing.Point(95, 607);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(86, 22);
-            this.label16.TabIndex = 29;
-            this.label16.Text = "Total : 10";
-            this.label16.Click += new System.EventHandler(this.label16_Click);
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.button1.Location = new System.Drawing.Point(285, 600);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(102, 35);
+            this.button1.TabIndex = 27;
+            this.button1.Text = "Hitung";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
-            // label17
+            // lblTotalLaporan
             // 
-            this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.label17.Location = new System.Drawing.Point(293, 607);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(163, 22);
-            this.label17.TabIndex = 30;
-            this.label17.Text = "Status : Connected";
+            this.lblTotalLaporan.AutoSize = true;
+            this.lblTotalLaporan.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lblTotalLaporan.Location = new System.Drawing.Point(94, 605);
+            this.lblTotalLaporan.Name = "lblTotalLaporan";
+            this.lblTotalLaporan.Size = new System.Drawing.Size(139, 25);
+            this.lblTotalLaporan.TabIndex = 28;
+            this.lblTotalLaporan.Text = "Total Laporan:";
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1146, 647);
-            this.Controls.Add(this.label17);
-            this.Controls.Add(this.label16);
+            this.Controls.Add(this.lblTotalLaporan);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label11);
@@ -303,7 +303,7 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label lblTotalLaporan;
     }
 }

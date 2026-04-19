@@ -53,6 +53,45 @@ namespace SISTEM_RESIK_LAPOR
             }
 
             LoadData();
+            lblTotalLaporan.Text = "Total Laporan: " + HitungJumlahLaporan();
+        }
+
+        int HitungJumlahLaporan()
+        {
+            int total = 0;
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    conn.Open();
+
+                    string query;
+
+                    if (roleUser == "masyarakat")
+                    {
+                        query = "SELECT COUNT(*) FROM Laporan WHERE id_user=@id";
+                    }
+                    else
+                    {
+                        query = "SELECT COUNT(*) FROM Laporan";
+                    }
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        if (roleUser == "masyarakat")
+                            cmd.Parameters.AddWithValue("@id", idUserLogin);
+
+                        total = (int)cmd.ExecuteScalar();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            return total;
         }
 
         void LoadData(string keyword = "")
@@ -295,6 +334,12 @@ namespace SISTEM_RESIK_LAPOR
         private void cmbStatus_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            int jumlah = HitungJumlahLaporan();
+            lblTotalLaporan.Text = "Total Laporan: " + jumlah;
         }
     }
 }
