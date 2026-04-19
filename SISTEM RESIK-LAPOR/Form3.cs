@@ -76,6 +76,15 @@ namespace SISTEM_RESIK_LAPOR
                 txtPoint.Enabled = false;
             }
         }
+        void LoadComboStatus()
+        {
+            cmbStatus.Items.Clear();
+            cmbStatus.Items.Add("pending");
+            cmbStatus.Items.Add("verifikasi");
+            cmbStatus.Items.Add("ditolak");
+
+            cmbStatus.SelectedIndex = 0;
+        }
         
     }
     
