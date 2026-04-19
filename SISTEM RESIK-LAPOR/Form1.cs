@@ -56,8 +56,30 @@ namespace SISTEM_RESIK_LAPOR
             linkRegister.Visible = true;
             linkRegister.BringToFront();
         }
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
 
-       
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                conn.Open();
+
+                string query = "SELECT id_user, role FROM Users WHERE email=@email AND password=@password";
+                SqlCommand cmd = new SqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@email", txtEmail.Text);
+                cmd.Parameters.AddWithValue("@password", txtPassword.Text);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
     }
     
 }
