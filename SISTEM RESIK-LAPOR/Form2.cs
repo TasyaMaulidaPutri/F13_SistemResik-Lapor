@@ -264,6 +264,11 @@ namespace SISTEM_RESIK_LAPOR
             }
         }
 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            LoadData();
+        }
+
        
     }
 }
