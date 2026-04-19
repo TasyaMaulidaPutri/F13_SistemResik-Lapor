@@ -16,11 +16,6 @@ namespace SISTEM_RESIK_LAPOR
     {
         string connString = "Data Source=LAPTOP-7BCU6RBN\\TASYAMAULIDA; Initial Catalog=DBResikLaporADO; Integrated Security=True";
         SqlConnection conn;
-        public Form1()
-        {
-            InitializeComponent();    
-        }
-
         
     }
     
