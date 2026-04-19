@@ -215,6 +215,55 @@ namespace SISTEM_RESIK_LAPOR
         }
         
 
-        
+        private void button3_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dataGridView1.CurrentRow == null)
+                {
+                    MessageBox.Show("Pilih data dulu!");
+                    return;
+                }
+
+                int idlap = Convert.ToInt32(dataGridView1.CurrentRow.Cells["id_laporan"].Value);
+
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    conn.Open();
+
+                    string query;
+
+                    if (roleUser == "admin")
+                    {
+                        query = "DELETE FROM Laporan WHERE id_laporan=@id";
+                    }
+                    else
+                    {
+                        query = "DELETE FROM Laporan WHERE id_laporan=@id AND id_user=@user";
+                    }
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", idlap);
+
+                        if (roleUser == "masyarakat")
+                        {
+                            cmd.Parameters.AddWithValue("@user", idUserLogin);
+                        }
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                MessageBox.Show("Data berhasil dihapus");
+                LoadData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+       
     }
 }
