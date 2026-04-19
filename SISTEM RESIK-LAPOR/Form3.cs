@@ -125,7 +125,136 @@ namespace SISTEM_RESIK_LAPOR
             }
         }
 
-        
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            if (roleUser != "admin")
+            {
+                MessageBox.Show("Hanya admin yang boleh update!");
+                return;
+            }
+
+            if (selectedIdSetoran == 0)
+            {
+                MessageBox.Show("Pilih data dulu!");
+                return;
+            }
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    conn.Open();
+
+                    int poinPerKg = Convert.ToInt32(txtPoint.Text);
+                    double berat = Convert.ToDouble(txtBerat.Text);
+                    int total = (int)(poinPerKg * berat);
+
+                    string query = @"UPDATE Setoran
+                            SET poin_per_kg=@ppk,
+                                total_poin_setoran=@total,
+                                status_verifikasi=@status
+                            WHERE id_setoran=@id";
+
+                    SqlCommand cmd = new SqlCommand(query, conn);
+
+                    cmd.Parameters.AddWithValue("@ppk", poinPerKg);
+                    cmd.Parameters.AddWithValue("@total", total);
+                    cmd.Parameters.AddWithValue("@status", cmbStatus.Text);
+                    cmd.Parameters.AddWithValue("@id", selectedIdSetoran);
+
+                    cmd.ExecuteNonQuery();
+                }
+
+                MessageBox.Show("Berhasil diverifikasi!");
+                LoadData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.CurrentRow == null)
+            {
+                MessageBox.Show("Pilih data dulu!");
+                return;
+            }
+
+            int idSetoran = Convert.ToInt32(dataGridView1.CurrentRow.Cells["id_setoran"].Value);
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    conn.Open();
+
+                    string query;
+                    SqlCommand cmd;
+
+                    if (roleUser.Trim().ToLower() == "admin")
+                    {
+                        query = "DELETE FROM Setoran WHERE id_setoran=@id";
+                        cmd = new SqlCommand(query, conn);
+                        cmd.Parameters.AddWithValue("@id", idSetoran);
+                    }
+                    else
+                    {
+                        query = "DELETE FROM Setoran WHERE id_setoran=@id AND id_user=@user";
+                        cmd = new SqlCommand(query, conn);
+
+                        cmd.Parameters.AddWithValue("@id", idSetoran);
+                        cmd.Parameters.AddWithValue("@user", idUserLogin);
+                    }
+
+                    int rows = cmd.ExecuteNonQuery();
+
+                    if (rows == 0)
+                        MessageBox.Show("Data tidak ditemukan atau bukan milik user ini!");
+                    else
+                        MessageBox.Show("Berhasil dihapus");
+                }
+
+                LoadData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void btnTampilkan_Click(object sender, EventArgs e)
+        {
+            LoadData();
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            
+        }
+
+        private void cmbStatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+
+                selectedIdSetoran = Convert.ToInt32(row.Cells["id_setoran"].Value);
+
+                txtBerat.Text = row.Cells["berat_kg"].Value.ToString();
+                txtJenis.Text = row.Cells["nama_jenis_sampah"].Value.ToString();
+                txtPoint.Text = row.Cells["poin_per_kg"].Value.ToString();
+                cmbStatus.Text = row.Cells["status_verifikasi"].Value.ToString();
+            }
+
+        }
     }
     
 }
