@@ -85,6 +85,46 @@ namespace SISTEM_RESIK_LAPOR
 
             cmbStatus.SelectedIndex = 0;
         }
+        private void label10_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnInsert_Click(object sender, EventArgs e)
+        {
+           
+            try
+            {
+                if (conn == null)
+                {
+                    conn = new SqlConnection(connString);
+                }
+                conn.Open();
+
+                string query = @"INSERT INTO Setoran
+                        (id_user, berat_kg, nama_jenis_sampah, poin_per_kg, total_poin_setoran, status_verifikasi)
+                        VALUES
+                        (@id, @berat, @jenis, 0, 0, 'pending')";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@id", idUserLogin);
+                cmd.Parameters.AddWithValue("@berat", Convert.ToDouble(txtBerat.Text));
+                cmd.Parameters.AddWithValue("@jenis", txtJenis.Text);
+
+                cmd.ExecuteNonQuery();
+
+                MessageBox.Show("Setoran berhasil dikirim");
+
+                conn.Close();
+                LoadData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
         
     }
     
