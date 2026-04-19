@@ -93,6 +93,71 @@ namespace SISTEM_RESIK_LAPOR
             }
         }
 
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (roleUser != "admin")
+                {
+                    MessageBox.Show("Hanya admin yang bisa update!");
+                    return;
+                }
+
+                if (dataGridView1.CurrentRow == null)
+                {
+                    MessageBox.Show("Pilih data dulu!");
+                    return;
+                }
+
+                int idlap = Convert.ToInt32(dataGridView1.CurrentRow.Cells["id_laporan"].Value);
+
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    conn.Open();
+
+                    string query = @"UPDATE Laporan 
+                                SET deskripsi=@desk, 
+                                foto=@foto, 
+                                lokasi_maps=@lokasi, 
+                                status=@status 
+                                WHERE id_laporan=@idlap";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@desk", txtDeskripsi.Text);
+                        cmd.Parameters.AddWithValue("@foto", txtFoto.Text);
+                        cmd.Parameters.AddWithValue("@lokasi", txtLokasi.Text);
+                        cmd.Parameters.AddWithValue("@status", cmbStatus.Text);
+                        cmd.Parameters.AddWithValue("@idlap", idlap);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                MessageBox.Show("Data berhasil diupdate");
+                LoadData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
        
     }
 }
