@@ -16,7 +16,48 @@ namespace SISTEM_RESIK_LAPOR
     {
         string connString = "Data Source=LAPTOP-7BCU6RBN\\TASYAMAULIDA; Initial Catalog=DBResikLaporADO; Integrated Security=True";
         SqlConnection conn;
-        
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void ConnectDatabase()
+        {
+
+            try
+            {
+                if (conn.State == System.Data.ConnectionState.Closed)
+                {
+                    conn.Open();
+                }
+                MessageBox.Show("Koneksi berhasil");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Koneksi gagal: " + ex.Message);
+            }
+        }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            conn = new SqlConnection(connString);
+
+            try
+            {
+                conn.Open();
+                lblStatus.Text = "Status : Koneksi Berhasil";
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                lblStatus.Text = "Status : Koneksi Gagal";
+                MessageBox.Show(ex.Message);
+            }
+            linkRegister.Text = "Belum punya akun? Registrasi";
+            linkRegister.Visible = true;
+            linkRegister.BringToFront();
+        }
+
+       
     }
     
 }
