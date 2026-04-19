@@ -62,7 +62,21 @@ namespace SISTEM_RESIK_LAPOR
                 MessageBox.Show(ex.Message);
             }
         }
-       
+        private void Form3_Load(object sender, EventArgs e)
+        {
+            conn = new SqlConnection(connString);
+
+            LoadComboStatus();
+            LoadData();
+
+            if (roleUser == "masyarakat")
+            {
+                btnUpdate.Enabled = false;
+                cmbStatus.Enabled = false;
+                txtPoint.Enabled = false;
+            }
+        }
+        
     }
     
 }
