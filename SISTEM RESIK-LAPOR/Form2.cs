@@ -37,7 +37,7 @@ namespace SISTEM_RESIK_LAPOR
         {
             conn = new SqlConnection(connString);
 
-            // isi combo status
+           
             cmbStatus.Items.Clear();
             cmbStatus.Items.Add("lapor");
             cmbStatus.Items.Add("proses");
@@ -45,7 +45,6 @@ namespace SISTEM_RESIK_LAPOR
             cmbStatus.SelectedIndex = 0;
 
 
-            // 🔒 ROLE SETTING
             if (roleUser == "masyarakat")
             {
                 btnUpdate.Visible = false;
@@ -54,6 +53,44 @@ namespace SISTEM_RESIK_LAPOR
             }
 
             LoadData();
+        }
+
+        void LoadData(string keyword = "")
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    conn.Open();
+
+                    string query;
+
+                    if (roleUser == "masyarakat")
+                    {
+                        query = "SELECT * FROM Laporan WHERE id_user=@id";
+                    }
+                    else
+                    {
+                        query = "SELECT * FROM Laporan";
+                    }
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        if (roleUser == "masyarakat")
+                            cmd.Parameters.AddWithValue("@id", idUserLogin);
+
+                        SqlDataAdapter da = new SqlDataAdapter(cmd);
+                        DataTable dt = new DataTable();
+                        da.Fill(dt);
+
+                        dataGridView1.DataSource = dt;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
        
