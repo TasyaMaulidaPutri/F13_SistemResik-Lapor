@@ -105,7 +105,18 @@ namespace SISTEM_RESIK_LAPOR
             }
         }
 
-        
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Form5 register = new Form5();
+            register.Show();
+            this.Hide();
+        }
+
     }
     
 }
