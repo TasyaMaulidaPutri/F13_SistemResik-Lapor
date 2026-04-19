@@ -69,6 +69,28 @@ namespace SISTEM_RESIK_LAPOR
             this.Hide();
         }
 
-        
+        private void btnKelolaLaporan_Click(object sender, EventArgs e)
+        {
+            if (roleUser != "Admin")
+            {
+                MessageBox.Show("Akses ditolak!");
+                return;
+            }
+
+            Form2 f2 = new Form2(idUserLogin, roleUser);
+            f2.Show();
+        }
+
+        private void btnVerifikasiSetoran_Click(object sender, EventArgs e)
+        {
+            if (roleUser != "Admin")
+            {
+                MessageBox.Show("Akses ditolak!");
+                return;
+            }
+
+            Form3 f3 = new Form3(idUserLogin, roleUser);
+            f3.Show();
+        }
     }
 }
