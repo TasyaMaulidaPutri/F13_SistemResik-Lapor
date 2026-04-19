@@ -158,6 +158,63 @@ namespace SISTEM_RESIK_LAPOR
             }
         }
 
-       
+        private void label16_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (txtDeskripsi.Text == "" || txtLokasi.Text == "")
+                {
+                    MessageBox.Show("Deskripsi dan Lokasi wajib diisi!");
+                    return;
+                }
+                if (roleUser != "masyarakat")
+                {
+                    MessageBox.Show("Hanya masyarakat yang boleh membuat laporan!");
+                    return;
+                }
+
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    conn.Open();
+
+                    string query = @"INSERT INTO Laporan 
+                            (id_user, deskripsi, foto, lokasi_maps, status)
+                            VALUES 
+                            (@id, @desk, @foto, @lokasi, @status)";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", idUserLogin); 
+                        cmd.Parameters.AddWithValue("@desk", txtDeskripsi.Text);
+                        cmd.Parameters.AddWithValue("@foto", txtFoto.Text);
+                        cmd.Parameters.AddWithValue("@lokasi", txtLokasi.Text);
+
+                        string status = (roleUser == "admin") ? cmbStatus.Text : "lapor";
+                        cmd.Parameters.AddWithValue("@status", status);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                MessageBox.Show("Laporan berhasil ditambahkan");
+                LoadData();
+
+                txtDeskripsi.Clear();
+                txtFoto.Clear();
+                txtLokasi.Clear();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        
+
+        
     }
 }
