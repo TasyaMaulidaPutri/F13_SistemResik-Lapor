@@ -126,41 +126,28 @@ namespace SISTEM_RESIK_LAPOR
             return total;
         }
 
-        void LoadData(string keyword = "")
+        private void LoadData()
         {
             try
             {
                 using (SqlConnection conn = new SqlConnection(connString))
                 {
                     conn.Open();
+                    string query = "SELECT * FROM vwLaporanPublic";
 
-                    string query;
-
-                    if (roleUser == "masyarakat")
+                    using (SqlDataAdapter da = new SqlDataAdapter(query, conn))
                     {
-                        query = "SELECT * FROM Laporan WHERE id_user=@id";
-                    }
-                    else
-                    {
-                        query = "SELECT * FROM Laporan";
-                    }
-
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
-                    {
-                        if (roleUser == "masyarakat")
-                            cmd.Parameters.AddWithValue("@id", idUserLogin);
-
-                        SqlDataAdapter da = new SqlDataAdapter(cmd);
-                        DataTable dt = new DataTable();
-                        da.Fill(dt);
-
-                        dataGridView1.DataSource = dt;
+                        dtLaporan = new DataTable();
+                        da.Fill(dtLaporan);
+                        bindingSource.DataSource = dtLaporan;
+                        dataGridView1.DataSource = bindingSource;
+                        BindControls();
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Gagal load data: " + ex.Message);
             }
         }
 
