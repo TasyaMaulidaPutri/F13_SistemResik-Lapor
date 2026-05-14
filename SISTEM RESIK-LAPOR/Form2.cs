@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace SISTEM_RESIK_LAPOR
 {
@@ -15,20 +16,26 @@ namespace SISTEM_RESIK_LAPOR
     {
         string connString = "Data Source=LAPTOP-7BCU6RBN\\TASYAMAULIDA; Initial Catalog=DBResikLaporADO; Integrated Security=True";
         SqlConnection conn;
+        private BindingSource bindingSource = new BindingSource();
+        private DataTable dtLaporan = new DataTable();
 
         int idUserLogin;
         string roleUser;
         public Form2(int idUser, string role)
         {
             InitializeComponent();
+            dataGridView1.CellClick += dataGridView1_CellClick;
             idUserLogin = idUser;
             roleUser = role.ToLower();
+
+            this.Load += Form2_Load;
 
             MessageBox.Show("Role: " + roleUser);
 
             if (roleUser.ToLower() == "masyarakat")
             {
                 btnUpdate.Visible = false;
+                btnTampil.Visible = false;
                 cmbStatus.Enabled = false;
             }
         }
@@ -37,19 +44,35 @@ namespace SISTEM_RESIK_LAPOR
         {
             conn = new SqlConnection(connString);
 
-           
+            btnInsert.Visible = false;
+            btnUpdate.Visible = false;
+            btnDelete.Visible = false;
+            btnTampil.Visible = false;
+
             cmbStatus.Items.Clear();
             cmbStatus.Items.Add("lapor");
             cmbStatus.Items.Add("proses");
             cmbStatus.Items.Add("bersih");
             cmbStatus.SelectedIndex = 0;
 
-
             if (roleUser == "masyarakat")
             {
-                btnUpdate.Visible = false;
-                btnTampil.Visible = false;
+                btnInsert.Visible = true;
+                btnDelete.Visible = true;
+
                 cmbStatus.Enabled = false;
+            }
+            else if (roleUser == "admin")
+            {
+                btnUpdate.Visible = true;
+                btnTampil.Visible = true;
+                btnDelete.Visible = true;
+
+                txtDeskripsi.ReadOnly = true;
+                txtLokasi.ReadOnly = true;
+                txtFoto.ReadOnly = true;
+
+                cmbStatus.Enabled = true;
             }
 
             LoadData();
@@ -206,14 +229,31 @@ namespace SISTEM_RESIK_LAPOR
         {
             try
             {
-                if (txtDeskripsi.Text == "" || txtLokasi.Text == "")
+                string deskripsi = txtDeskripsi.Text.Trim();
+                string lokasi = txtLokasi.Text.Trim();
+                string foto = txtFoto.Text.Trim();
+
+                if (roleUser != "masyarakat")
+                {
+                    MessageBox.Show("Hanya masyarakat yang boleh membuat laporan!");
+                    return;
+                }
+
+                if (deskripsi == "" || lokasi == "")
                 {
                     MessageBox.Show("Deskripsi dan Lokasi wajib diisi!");
                     return;
                 }
-                if (roleUser != "masyarakat")
+
+                if (!IsValidText(deskripsi) || !IsValidText(lokasi))
                 {
-                    MessageBox.Show("Hanya masyarakat yang boleh membuat laporan!");
+                    MessageBox.Show("Deskripsi dan lokasi tidak boleh mengandung simbol!");
+                    return;
+                }
+
+                if (foto != "" && !IsValidText(foto))
+                {
+                    MessageBox.Show("Nama file foto tidak boleh mengandung simbol!");
                     return;
                 }
 
@@ -222,19 +262,15 @@ namespace SISTEM_RESIK_LAPOR
                     conn.Open();
 
                     string query = @"INSERT INTO Laporan 
-                            (id_user, deskripsi, foto, lokasi_maps, status)
-                            VALUES 
-                            (@id, @desk, @foto, @lokasi, @status)";
+                (id_user, deskripsi, foto, lokasi_maps, status)
+                VALUES (@id, @desk, @foto, @lokasi, 'lapor')";
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@id", idUserLogin); 
-                        cmd.Parameters.AddWithValue("@desk", txtDeskripsi.Text);
-                        cmd.Parameters.AddWithValue("@foto", txtFoto.Text);
-                        cmd.Parameters.AddWithValue("@lokasi", txtLokasi.Text);
-
-                        string status = (roleUser == "admin") ? cmbStatus.Text : "lapor";
-                        cmd.Parameters.AddWithValue("@status", status);
+                        cmd.Parameters.AddWithValue("@id", idUserLogin);
+                        cmd.Parameters.AddWithValue("@desk", deskripsi);
+                        cmd.Parameters.AddWithValue("@foto", foto);
+                        cmd.Parameters.AddWithValue("@lokasi", lokasi);
 
                         cmd.ExecuteNonQuery();
                     }
@@ -313,21 +349,24 @@ namespace SISTEM_RESIK_LAPOR
 
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
 
-                txtDeskripsi.Text = row.Cells["deskripsi"].Value.ToString();
-                txtFoto.Text = row.Cells["foto"].Value.ToString();
-                txtLokasi.Text = row.Cells["lokasi_maps"].Value.ToString();
-                cmbStatus.Text = row.Cells["status"].Value.ToString();
+                txtDeskripsi.Text = row.Cells[2].Value?.ToString() ?? "";
+                txtFoto.Text = row.Cells[3].Value?.ToString() ?? "";
+                txtLokasi.Text = row.Cells[4].Value?.ToString() ?? "";
+                cmbStatus.Text = row.Cells[5].Value?.ToString() ?? "";
             }
         }
 
         private void Form2_Load_1(object sender, EventArgs e)
         {
+            this.laporanTableAdapter.Fill(this.dBResikLaporADODataSet2.Laporan);
+            
+            this.laporanTableAdapter.Fill(this.dBResikLaporADODataSet2.Laporan);
 
         }
 
@@ -340,6 +379,66 @@ namespace SISTEM_RESIK_LAPOR
         {
             int jumlah = HitungJumlahLaporan();
             lblTotalLaporan.Text = "Total Laporan: " + jumlah;
+        }
+
+        private bool IsValidText(string input)
+        {
+            return Regex.IsMatch(input, @"^[a-zA-Z0-9\s]+$");
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                DataTable dt = dataGridView1.DataSource as DataTable;
+
+                if (dt != null)
+                {
+                    string filterText = txtSearch.Text.Trim();
+
+                    if (string.IsNullOrEmpty(filterText))
+                    {
+                        dt.DefaultView.RowFilter = string.Empty;
+                    }
+                    else
+                    {
+                        dt.DefaultView.RowFilter = string.Format(
+                            "deskripsi LIKE '%{0}%' OR " +
+                            "lokasi_maps LIKE '%{0}%' OR " +
+                            "Convert(id_laporan, 'System.String') LIKE '%{0}%'",
+                            filterText);
+                    }
+
+                    if (dt.DefaultView.Count == 0)
+                    {
+                        MessageBox.Show("Data tidak ditemukan untuk kata kunci: " + filterText);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Gagal melakukan pencarian: " + ex.Message);
+            }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            DataTable dt = (DataTable)dataGridView1.DataSource;
+
+            if (dt != null)
+            {
+                dt.DefaultView.RowFilter = string.Format("deskripsi LIKE '%{0}%'", txtSearch.Text);
+            }
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+
         }
     }
 }
