@@ -24,6 +24,7 @@ namespace SISTEM_RESIK_LAPOR
         public Form2(int idUser, string role)
         {
             InitializeComponent();
+
             dataGridView1.CellClick += dataGridView1_CellClick;
             idUserLogin = idUser;
             roleUser = role.ToLower();
@@ -74,6 +75,14 @@ namespace SISTEM_RESIK_LAPOR
 
                 cmbStatus.Enabled = true;
             }
+
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView1.MultiSelect = false;
+            dataGridView1.ReadOnly = true;
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            LoadData();
 
             LoadData();
             lblTotalLaporan.Text = "Total Laporan: " + HitungJumlahLaporan();
