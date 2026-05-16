@@ -437,17 +437,77 @@ namespace SISTEM_RESIK_LAPOR
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            DataTable dt = (DataTable)dataGridView1.DataSource;
-
-            if (dt != null)
+            try
             {
-                dt.DefaultView.RowFilter = string.Format("deskripsi LIKE '%{0}%'", txtSearch.Text);
+                if (bindingSource != null && bindingSource.DataSource != null)
+                {
+                    string filterText = txtSearch.Text.Trim().Replace("'", "''");
+
+                    if (string.IsNullOrEmpty(filterText))
+                    {
+                        bindingSource.RemoveFilter();
+                    }
+                    else
+                    {
+                        bindingSource.Filter = string.Format("deskripsi LIKE '%{0}%'", filterText);
+                    }
+                }
             }
+            catch (Exception ex)
+            {
+                // Menghindari aplikasi close tiba-tiba jika ada kesalahan filter
+                Console.WriteLine("Error Filter: " + ex.Message);
+            }
+
         }
 
         private void button3_Click_1(object sender, EventArgs e)
         {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    conn.Open();
 
+                    string query = @"
+                    IF OBJECT_ID('dbo.Laporan_Backup') IS NOT NULL
+                    BEGIN
+                    DELETE FROM dbo.Laporan;
+
+                    SET IDENTITY_INSERT dbo.Laporan ON;
+
+                    INSERT INTO dbo.Laporan 
+                    (id_laporan, id_user, deskripsi, foto, lokasi_maps, status)
+                    SELECT 
+                    id_laporan, id_user, deskripsi, foto, lokasi_maps, status 
+                    FROM dbo.Laporan_Backup;
+
+                    SET IDENTITY_INSERT dbo.Laporan OFF;
+                    END
+                    ELSE
+                    BEGIN
+                        RAISERROR('Tabel backup tidak ditemukan!',16,1)
+                    END";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                MessageBox.Show("Data berhasil direset");
+                LoadData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Reset gagal: " + ex.Message);
+            }
+        }
+
+        private void button4_Click_1(object sender, EventArgs e)
+        {
+            
+            }
         }
     }
 }
