@@ -506,7 +506,25 @@ namespace SISTEM_RESIK_LAPOR
 
         private void button4_Click_1(object sender, EventArgs e)
         {
-            
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    conn.Open();
+
+                    string query = "UPDATE Laporan SET deskripsi='HACKED' WHERE deskripsi='" + txtDeskripsi.Text + "'";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        int result = cmd.ExecuteNonQuery();
+                        MessageBox.Show(result + " baris berhasil diinjeksi!");
+                    }
+                }
+                LoadData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error Injeksi: " + ex.Message);
             }
         }
     }
