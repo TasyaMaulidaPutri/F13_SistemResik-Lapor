@@ -36,7 +36,10 @@ namespace SISTEM_RESIK_LAPOR
             return Regex.IsMatch(password, @".+");
         }
 
-       
+        private bool IsValidAlamat(string alamat)
+        {
+            return Regex.IsMatch(alamat, @"^[a-zA-Z0-9\s.,-]+$");
+        }
 
         private void btnRegistrasi_Click(object sender, EventArgs e)
         {
@@ -69,7 +72,13 @@ namespace SISTEM_RESIK_LAPOR
                 return;
             }
 
-           
+            if (!IsValidAlamat(alamat))
+            {
+                MessageBox.Show("Alamat tidak boleh mengandung simbol aneh! Hanya boleh huruf, angka, spasi, titik (.), koma (,), atau strip (-).");
+                return; 
+            }
+
+            
         }
 
         private void textAlamat_TextChanged(object sender, EventArgs e)
@@ -79,8 +88,8 @@ namespace SISTEM_RESIK_LAPOR
 
         private void textAlamat_KeyPress(object sender, KeyPressEventArgs e)
         {
-  
-           
+    
+            
         }
     }
 }
