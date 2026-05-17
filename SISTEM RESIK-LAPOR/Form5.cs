@@ -128,7 +128,27 @@ namespace SISTEM_RESIK_LAPOR
         private void textAlamat_KeyPress(object sender, KeyPressEventArgs e)
         {
     
-           
+            if (char.IsLetterOrDigit(e.KeyChar))
+            {
+                return;
+            }
+
+            if (char.IsControl(e.KeyChar))
+            {
+                return;
+            }
+
+            if (char.IsWhiteSpace(e.KeyChar))
+            {
+                return;
+            }
+
+            if (e.KeyChar == '.' || e.KeyChar == ',' || e.KeyChar == '-')
+            {
+                return; 
+            }
+
+            e.Handled = true;
         }
     }
 }
