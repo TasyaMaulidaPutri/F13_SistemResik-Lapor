@@ -64,3 +64,285 @@ INSERT INTO Setoran (id_user, berat_kg, nama_jenis_sampah, poin_per_kg, total_po
 
 SELECT * FROM Users
 
+CREATE VIEW vwLaporanPublic AS
+SELECT
+	id_laporan,
+    id_user,
+    deskripsi,
+    foto,
+    lokasi_maps,
+    status
+FROM Laporan;
+
+SELECT *
+INTO Laporan_Backup
+FROM Laporan;
+
+--stored procedure select
+CREATE PROCEDURE sp_GetLaporan
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        id_laporan,
+        id_user,
+        deskripsi,
+        foto,
+        lokasi_maps,
+        status
+    FROM vwLaporanPublic
+END
+
+--stored procedure select parameter
+CREATE PROCEDURE sp_GetLaporanById
+    @id_laporan INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        id_laporan,
+        id_user,
+        deskripsi,
+        foto,
+        lokasi_maps,
+        status
+    FROM vwLaporanPublic
+    WHERE id_laporan = @id_laporan
+END
+
+--Stroed procedure insert
+CREATE PROCEDURE sp_InsertLaporan
+    @id_user INT,
+    @deskripsi VARCHAR(255),
+    @foto VARCHAR(255),
+    @lokasi_maps VARCHAR(255)
+AS
+BEGIN
+    INSERT INTO Laporan
+    (id_user, deskripsi, foto, lokasi_maps, status)
+    VALUES
+    (@id_user, @deskripsi, @foto, @lokasi_maps, 'lapor')
+END
+
+--Stored procedure update
+CREATE PROCEDURE sp_UpdateLaporan
+    @id_laporan INT,
+    @deskripsi VARCHAR(255),
+    @foto VARCHAR(255),
+    @lokasi_maps VARCHAR(255),
+    @status VARCHAR(50)
+AS
+BEGIN
+    UPDATE Laporan
+    SET
+        deskripsi = @deskripsi,
+        foto = @foto,
+        lokasi_maps = @lokasi_maps,
+        status = @status
+    WHERE id_laporan = @id_laporan
+END
+
+--stored procedure delete
+CREATE PROCEDURE sp_DeleteLaporan
+    @id_laporan INT
+AS
+BEGIN
+    DELETE FROM Laporan
+    WHERE id_laporan = @id_laporan
+END
+
+--stored procedure search
+CREATE PROCEDURE sp_SearchLaporan
+    @keyword VARCHAR(255)
+AS
+BEGIN
+    SELECT *
+    FROM vwLaporanPublic
+    WHERE
+        deskripsi LIKE '%' + @keyword + '%'
+        OR lokasi_maps LIKE '%' + @keyword + '%'
+        OR CAST(id_laporan AS VARCHAR) LIKE '%' + @keyword + '%'
+END
+
+--Stored Procedure COUNT (OUTPUT PARAMETER)
+CREATE PROCEDURE sp_CountLaporan
+    @jumlah INT OUTPUT
+AS
+BEGIN
+    SELECT @jumlah = COUNT(*) FROM Laporan
+END
+
+--====================================
+-- CREATE VIEW
+--===================================
+CREATE VIEW vwSetoranPublic AS
+SELECT
+    id_setoran,
+    id_user,
+    berat_kg,
+    nama_jenis_sampah,
+    poin_per_kg,
+    total_poin_setoran,
+    status_verifikasi
+FROM Setoran;
+GO
+-- =========================================
+-- STORED PROCEDURE SELECT ALL SETORAN
+-- =========================================
+CREATE PROCEDURE sp_GetSetoran
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        id_setoran,
+        id_user,
+        berat_kg,
+        nama_jenis_sampah,
+        poin_per_kg,
+        total_poin_setoran,
+        status_verifikasi
+    FROM vwSetoranPublic
+END
+GO
+
+
+-- =========================================
+-- STORED PROCEDURE SELECT SETORAN BY ID
+-- =========================================
+CREATE PROCEDURE sp_GetSetoranById
+    @id_setoran INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        id_setoran,
+        id_user,
+        berat_kg,
+        nama_jenis_sampah,
+        poin_per_kg,
+        total_poin_setoran,
+        status_verifikasi
+    FROM vwSetoranPublic
+    WHERE id_setoran = @id_setoran
+END
+GO
+
+
+-- =========================================
+-- STORED PROCEDURE INSERT SETORAN
+-- =========================================
+CREATE PROCEDURE sp_InsertSetoran
+    @id_user INT,
+    @berat_kg INT,
+    @nama_jenis_sampah VARCHAR(100),
+    @poin_per_kg INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @total_poin INT
+
+    SET @total_poin = @berat_kg * @poin_per_kg
+
+    INSERT INTO Setoran
+    (
+        id_user,
+        berat_kg,
+        nama_jenis_sampah,
+        poin_per_kg,
+        total_poin_setoran,
+        status_verifikasi
+    )
+    VALUES
+    (
+        @id_user,
+        @berat_kg,
+        @nama_jenis_sampah,
+        @poin_per_kg,
+        @total_poin,
+        'pending'
+    )
+END
+GO
+
+
+-- =========================================
+-- STORED PROCEDURE UPDATE SETORAN
+-- =========================================
+CREATE PROCEDURE sp_UpdateSetoran
+    @id_setoran INT,
+    @berat_kg INT,
+    @nama_jenis_sampah VARCHAR(100),
+    @poin_per_kg INT,
+    @status_verifikasi VARCHAR(20)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @total_poin INT
+
+    SET @total_poin = @berat_kg * @poin_per_kg
+
+    UPDATE Setoran
+    SET
+        berat_kg = @berat_kg,
+        nama_jenis_sampah = @nama_jenis_sampah,
+        poin_per_kg = @poin_per_kg,
+        total_poin_setoran = @total_poin,
+        status_verifikasi = @status_verifikasi
+    WHERE id_setoran = @id_setoran
+END
+GO
+
+
+-- =========================================
+-- STORED PROCEDURE DELETE SETORAN
+-- =========================================
+CREATE PROCEDURE sp_DeleteSetoran
+    @id_setoran INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DELETE FROM Setoran
+    WHERE id_setoran = @id_setoran
+END
+GO
+
+
+-- =========================================
+-- STORED PROCEDURE SEARCH SETORAN
+-- =========================================
+CREATE PROCEDURE sp_SearchSetoran
+    @keyword VARCHAR(100)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT *
+    FROM vwSetoranPublic
+    WHERE
+        nama_jenis_sampah LIKE '%' + @keyword + '%'
+        OR status_verifikasi LIKE '%' + @keyword + '%'
+        OR CAST(id_setoran AS VARCHAR) LIKE '%' + @keyword + '%'
+END
+GO
+
+
+-- =========================================
+-- STORED PROCEDURE COUNT SETORAN
+-- =========================================
+CREATE PROCEDURE sp_CountSetoran
+    @jumlah INT OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT @jumlah = COUNT(*)
+    FROM vwSetoranPublic
+END
+GO
