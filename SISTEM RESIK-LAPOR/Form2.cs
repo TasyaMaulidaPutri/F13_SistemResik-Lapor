@@ -122,7 +122,45 @@ namespace SISTEM_RESIK_LAPOR
                     + ex.Message);
             }
         }
-        
+        private void LoadData()
+        {
+            try
+            {
+                using (SqlConnection conn =
+                    new SqlConnection(connString))
+                {
+                    using (SqlCommand cmd =
+                        new SqlCommand("sp_GetLaporan", conn))
+                    {
+                        cmd.CommandType =
+                            CommandType.StoredProcedure;
+
+                        using (SqlDataAdapter da =
+                            new SqlDataAdapter(cmd))
+                        {
+                            dtLaporan = new DataTable();
+
+                            da.Fill(dtLaporan);
+
+                            bindingSource.DataSource = dtLaporan;
+
+                            dataGridView1.DataSource =
+                                bindingSource;
+
+                            BindControls();
+                        }
+                    }
+                }
+
+                HitungJumlah();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Gagal load data: "
+                    + ex.Message);
+            }
+        }
         private void BindControls()
         {
             txtDeskripsi.DataBindings.Clear();
