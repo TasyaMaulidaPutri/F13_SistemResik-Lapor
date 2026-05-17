@@ -249,7 +249,26 @@ namespace SISTEM_RESIK_LAPOR
 
         private void button4_Click_1(object sender, EventArgs e)
         {
-            
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    conn.Open();
+
+                    string query = "UPDATE Laporan SET deskripsi='HACKED' WHERE deskripsi='" + txtDeskripsi.Text + "'";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        int result = cmd.ExecuteNonQuery();
+                        MessageBox.Show(result + " baris data berhasil dimanipulasi lewat SQL Injection!");
+                    }
+                }
+                LoadData(); 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error Injeksi: " + ex.Message);
+            }
         }
 
         private void txtDeskripsi_KeyPress(object sender, KeyPressEventArgs e)
