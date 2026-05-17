@@ -158,7 +158,40 @@ namespace SISTEM_RESIK_LAPOR
 
         private void button3_Click(object sender, EventArgs e)
         {
-            
+            try
+            {
+                if (dataGridView1.CurrentRow == null)
+                {
+                    MessageBox.Show("Pilih data dulu!");
+                    return;
+                }
+
+                int idlap = Convert.ToInt32(dataGridView1.CurrentRow.Cells["id_laporan"].Value);
+
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_DeleteLaporan", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@id_laporan", idlap);
+
+                        conn.Open();
+
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                            MessageBox.Show("Data berhasil dihapus");
+                        else
+                            MessageBox.Show("Data tidak ditemukan");
+                    }
+                }
+
+                LoadData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void button4_Click(object sender, EventArgs e)
