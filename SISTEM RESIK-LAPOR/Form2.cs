@@ -214,7 +214,31 @@ namespace SISTEM_RESIK_LAPOR
 
         private void button2_Click_1(object sender, EventArgs e)
         {
-            
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_SearchLaporan", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@keyword", txtSearch.Text);
+
+                        SqlDataAdapter da = new SqlDataAdapter(cmd);
+
+                        DataTable dt = new DataTable();
+
+                        da.Fill(dt);
+
+                        dataGridView1.DataSource = dt;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Gagal melakukan pencarian: "
+                    + ex.Message);
+            }
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
