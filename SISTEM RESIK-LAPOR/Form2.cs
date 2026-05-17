@@ -254,7 +254,27 @@ namespace SISTEM_RESIK_LAPOR
 
         private void txtDeskripsi_KeyPress(object sender, KeyPressEventArgs e)
         {
-           
+            if (char.IsLetter(e.KeyChar))
+            {
+                return;
+            }
+
+            if (char.IsControl(e.KeyChar))
+            {
+                return;
+            }
+
+            if (char.IsWhiteSpace(e.KeyChar))
+            {
+                return;
+            }
+
+            if (e.KeyChar == '.' || e.KeyChar == ',' || e.KeyChar == '-')
+            {
+                return;
+            }
+
+            e.Handled = true;
         }
 
         private void txtLokasi_TextChanged(object sender, EventArgs e)
