@@ -244,7 +244,45 @@ namespace SISTEM_RESIK_LAPOR
 
         private void button3_Click_1(object sender, EventArgs e)
         {
-            
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    conn.Open();
+
+                    string query = @"
+                    IF OBJECT_ID('dbo.Laporan_Backup') IS NOT NULL
+                    BEGIN
+                    DELETE FROM dbo.Laporan;
+
+                    SET IDENTITY_INSERT dbo.Laporan ON;
+
+                    INSERT INTO dbo.Laporan 
+                    (id_laporan, id_user, deskripsi, foto, lokasi_maps, status)
+                    SELECT 
+                    id_laporan, id_user, deskripsi, foto, lokasi_maps, status 
+                    FROM dbo.Laporan_Backup;
+
+                    SET IDENTITY_INSERT dbo.Laporan OFF;
+                    END
+                    ELSE
+                    BEGIN
+                        RAISERROR('Tabel backup tidak ditemukan!',16,1)
+                    END";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                MessageBox.Show("Data berhasil direset");
+                LoadData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Reset gagal: " + ex.Message);
+            }
         }
 
         private void button4_Click_1(object sender, EventArgs e)
