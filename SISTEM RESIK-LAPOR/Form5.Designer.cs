@@ -157,6 +157,8 @@
             this.textAlamat.Name = "textAlamat";
             this.textAlamat.Size = new System.Drawing.Size(155, 26);
             this.textAlamat.TabIndex = 12;
+            this.textAlamat.TextChanged += new System.EventHandler(this.textAlamat_TextChanged);
+            this.textAlamat.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textAlamat_KeyPress);
             // 
             // btnRegistrasi
             // 

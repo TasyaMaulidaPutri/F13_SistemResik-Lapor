@@ -46,6 +46,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DBResikLaporADODataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBResikLaporADODataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DBResikLaporADODataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBResikLaporADODataSet1.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DBResikLaporADODataSet2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBResikLaporADODataSet2.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DBResikLaporADODataSet3.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBResikLaporADODataSet3.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -102,6 +122,50 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="DBResikLaporADODataSet.xsc">
+      <DependentUpon>DBResikLaporADODataSet.xsd</DependentUpon>
+    </None>
+    <None Include="DBResikLaporADODataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DBResikLaporADODataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DBResikLaporADODataSet.xss">
+      <DependentUpon>DBResikLaporADODataSet.xsd</DependentUpon>
+    </None>
+    <None Include="DBResikLaporADODataSet1.xsc">
+      <DependentUpon>DBResikLaporADODataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="DBResikLaporADODataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DBResikLaporADODataSet1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DBResikLaporADODataSet1.xss">
+      <DependentUpon>DBResikLaporADODataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="DBResikLaporADODataSet2.xsc">
+      <DependentUpon>DBResikLaporADODataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="DBResikLaporADODataSet2.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DBResikLaporADODataSet2.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DBResikLaporADODataSet2.xss">
+      <DependentUpon>DBResikLaporADODataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="DBResikLaporADODataSet3.xsc">
+      <DependentUpon>DBResikLaporADODataSet3.xsd</DependentUpon>
+    </None>
+    <None Include="DBResikLaporADODataSet3.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DBResikLaporADODataSet3.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DBResikLaporADODataSet3.xss">
+      <DependentUpon>DBResikLaporADODataSet3.xsd</DependentUpon>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

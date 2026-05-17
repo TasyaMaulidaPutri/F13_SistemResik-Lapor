@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -37,21 +38,33 @@ namespace SISTEM_RESIK_LAPOR
                 MessageBox.Show("Koneksi gagal: " + ex.Message);
             }
         }
+
+        private bool IsValidEmail(string email)
+        {
+            return Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+        }
+
+        private bool IsValidPassword(string password)
+        {
+            return Regex.IsMatch(password, @"^[a-zA-Z0-9]+$");
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
-            conn = new SqlConnection(connString);
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                try
+                {
+                    conn.Open();
+                    lblStatus.Text = "Status : Koneksi Berhasil";
+                }
+                catch (Exception ex)
+                {
+                    lblStatus.Text = "Status : Koneksi Gagal";
+                    MessageBox.Show(ex.Message);
+                }
+            }
 
-            try
-            {
-                conn.Open();
-                lblStatus.Text = "Status : Koneksi Berhasil";
-                conn.Close();
-            }
-            catch (Exception ex)
-            {
-                lblStatus.Text = "Status : Koneksi Gagal";
-                MessageBox.Show(ex.Message);
-            }
             linkRegister.Text = "Belum punya akun? Registrasi";
             linkRegister.Visible = true;
             linkRegister.BringToFront();
@@ -68,40 +81,63 @@ namespace SISTEM_RESIK_LAPOR
 
         private void button1_Click(object sender, EventArgs e)
         {
+            string email = txtEmail.Text.Trim();
+            string password = txtPassword.Text.Trim();
+
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+            {
+                MessageBox.Show("Email dan password harus diisi!");
+                return;
+            }
+
+            if (!IsValidEmail(email))
+            {
+                MessageBox.Show("Format email tidak valid!");
+                return;
+            }
+
+            if (!IsValidPassword(password))
+            {
+                MessageBox.Show("Password tidak boleh mengandung simbol!");
+                return;
+            }
+
             try
             {
-                conn.Open();
-
-                string query = "SELECT id_user, role FROM Users WHERE email=@email AND password=@password";
-                SqlCommand cmd = new SqlCommand(query, conn);
-
-                cmd.Parameters.AddWithValue("@email", txtEmail.Text);
-                cmd.Parameters.AddWithValue("@password", txtPassword.Text);
-
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                if (reader.Read())
+                using (SqlConnection conn = new SqlConnection(connString))
                 {
-                    int idUser = Convert.ToInt32(reader["id_user"]);
-                    string role = reader["role"].ToString();
+                    conn.Open();
 
-                    MessageBox.Show("Login sebagai " + role);
+                    string query = "SELECT id_user, role FROM Users WHERE email=@email AND password=@password";
+                    SqlCommand cmd = new SqlCommand(query, conn);
 
-                    Form4 menu = new Form4(idUser, role);
-                    menu.Show();
-                    this.Hide();
+                    cmd.Parameters.AddWithValue("@email", email);
+                    cmd.Parameters.AddWithValue("@password", password);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        int idUser = Convert.ToInt32(reader["id_user"]);
+                        string role = reader["role"].ToString();
+
+                        MessageBox.Show("Login sebagai " + role);
+
+                        Form4 menu = new Form4(idUser, role);
+                        menu.Show();
+                        this.Hide();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Email atau password salah!");
+                    }
+
+                    reader.Close();
                 }
-                else
-                {
-                    MessageBox.Show("Email atau password salah!");
-                }
-
-                reader.Close();
-                conn.Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Error: " + ex.Message);
             }
         }
 

@@ -85,7 +85,7 @@
             this.btnKelolaLaporan.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.btnKelolaLaporan.Location = new System.Drawing.Point(489, 174);
             this.btnKelolaLaporan.Name = "btnKelolaLaporan";
-            this.btnKelolaLaporan.Size = new System.Drawing.Size(177, 47);
+            this.btnKelolaLaporan.Size = new System.Drawing.Size(213, 47);
             this.btnKelolaLaporan.TabIndex = 4;
             this.btnKelolaLaporan.Text = "Kelola Laporan";
             this.btnKelolaLaporan.UseVisualStyleBackColor = true;
@@ -96,7 +96,7 @@
             this.btnVerifikasiSetoran.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.btnVerifikasiSetoran.Location = new System.Drawing.Point(489, 227);
             this.btnVerifikasiSetoran.Name = "btnVerifikasiSetoran";
-            this.btnVerifikasiSetoran.Size = new System.Drawing.Size(177, 45);
+            this.btnVerifikasiSetoran.Size = new System.Drawing.Size(213, 45);
             this.btnVerifikasiSetoran.TabIndex = 5;
             this.btnVerifikasiSetoran.Text = "Verifikasi Setoran";
             this.btnVerifikasiSetoran.UseVisualStyleBackColor = true;

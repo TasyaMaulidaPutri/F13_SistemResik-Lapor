@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DBResikLaporADODataSet" targetNamespace="http://tempuri.org/DBResikLaporADODataSet.xsd" xmlns:mstns="http://tempuri.org/DBResikLaporADODataSet.xsd" xmlns="http://tempuri.org/DBResikLaporADODataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="DBResikLaporADOConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="DBResikLaporADOConnectionString (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.SISTEM_RESIK_LAPOR.Properties.Settings.GlobalReference.Default.DBResikLaporADOConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="LaporanTableAdapter" GeneratorDataComponentClassName="LaporanTableAdapter" Name="Laporan" UserDataComponentName="LaporanTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="DBResikLaporADOConnectionString (Settings)" DbObjectName="DBResikLaporADO.dbo.Laporan" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>SELECT deskripsi FROM dbo.Laporan</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="deskripsi" DataSetColumn="deskripsi" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DBResikLaporADODataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="True" msprop:Generator_UserDSName="DBResikLaporADODataSet" msprop:Generator_DataSetName="DBResikLaporADODataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="Laporan" msprop:Generator_RowEvHandlerName="LaporanRowChangeEventHandler" msprop:Generator_RowDeletedName="LaporanRowDeleted" msprop:Generator_RowDeletingName="LaporanRowDeleting" msprop:Generator_RowEvArgName="LaporanRowChangeEvent" msprop:Generator_TablePropName="Laporan" msprop:Generator_RowChangedName="LaporanRowChanged" msprop:Generator_RowChangingName="LaporanRowChanging" msprop:Generator_TableClassName="LaporanDataTable" msprop:Generator_RowClassName="LaporanRow" msprop:Generator_TableVarName="tableLaporan" msprop:Generator_UserTableName="Laporan">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="deskripsi" msprop:Generator_ColumnPropNameInRow="deskripsi" msprop:Generator_ColumnPropNameInTable="deskripsiColumn" msprop:Generator_ColumnVarNameInTable="columndeskripsi" msprop:Generator_UserColumnName="deskripsi" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

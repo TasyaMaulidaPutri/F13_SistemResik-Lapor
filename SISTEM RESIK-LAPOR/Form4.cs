@@ -21,25 +21,25 @@ namespace SISTEM_RESIK_LAPOR
         {
             InitializeComponent();
             idUserLogin = idUser;
-            roleUser = role;
+            roleUser = role.ToLower();
+            this.Load += Form4_Load;
         }
-        private void FormMenu_Load(object sender, EventArgs e)
+        private void Form4_Load(object sender, EventArgs e)
         {
             lblUser.Text = "Login sebagai: " + roleUser;
 
-            if (roleUser == "Masyarakat")
-            {
-                btnKelolaLaporan.Visible = false;
-                btnVerifikasiSetoran.Visible = false;
+            btnLaporan.Visible = false;
+            btnSetoran.Visible = false;
+            btnKelolaLaporan.Visible = false;
+            btnVerifikasiSetoran.Visible = false;
 
+            if (roleUser == "masyarakat")
+            {
                 btnLaporan.Visible = true;
                 btnSetoran.Visible = true;
             }
-            else if (roleUser == "Admin")
+            else if (roleUser == "admin")
             {
-                btnLaporan.Visible = false;
-                btnSetoran.Visible = false;
-
                 btnKelolaLaporan.Visible = true;
                 btnVerifikasiSetoran.Visible = true;
             }
@@ -52,14 +52,26 @@ namespace SISTEM_RESIK_LAPOR
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (roleUser != "masyarakat")
+            {
+                MessageBox.Show("Akses ditolak!");
+                return;
+            }
+
             Form2 f2 = new Form2(idUserLogin, roleUser);
             f2.Show();
         }
 
         private void btnSetoran_Click(object sender, EventArgs e)
         {
-            Form3 f3 = new Form3(idUserLogin, roleUser);
-            f3.Show();
+            if (roleUser != "masyarakat")
+    {
+        MessageBox.Show("Akses ditolak!");
+        return;
+    }
+
+    Form3 f3 = new Form3(idUserLogin, roleUser);
+    f3.Show();
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -71,7 +83,7 @@ namespace SISTEM_RESIK_LAPOR
 
         private void btnKelolaLaporan_Click(object sender, EventArgs e)
         {
-            if (roleUser != "Admin")
+            if (roleUser != "admin")
             {
                 MessageBox.Show("Akses ditolak!");
                 return;
@@ -83,7 +95,7 @@ namespace SISTEM_RESIK_LAPOR
 
         private void btnVerifikasiSetoran_Click(object sender, EventArgs e)
         {
-            if (roleUser != "Admin")
+            if (roleUser != "admin")
             {
                 MessageBox.Show("Akses ditolak!");
                 return;
