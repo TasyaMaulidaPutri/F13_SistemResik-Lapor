@@ -152,7 +152,52 @@ namespace SISTEM_RESIK_LAPOR
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
+            try
+            {
+                string deskripsi = txtDeskripsi.Text.Trim();
+                string lokasi = txtLokasi.Text.Trim();
+                string foto = txtFoto.Text.Trim();
+
+                if (roleUser != "masyarakat")
+                {
+                    MessageBox.Show("Hanya masyarakat yang boleh membuat laporan!");
+                    return;
+                }
+
+                if (deskripsi == "" || lokasi == "")
+                {
+                    MessageBox.Show("Deskripsi dan lokasi wajib diisi!");
+                    return;
+                }
+
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_InsertLaporan", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@id_user", idUserLogin);
+                        cmd.Parameters.AddWithValue("@deskripsi", deskripsi);
+                        cmd.Parameters.AddWithValue("@foto", foto);
+                        cmd.Parameters.AddWithValue("@lokasi_maps", lokasi);
+
+                        conn.Open();
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                MessageBox.Show("Laporan berhasil ditambahkan");
+
+                LoadData();
+
+                txtDeskripsi.Clear();
+                txtFoto.Clear();
+                txtLokasi.Clear();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         
 
