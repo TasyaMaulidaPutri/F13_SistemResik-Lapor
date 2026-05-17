@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace SISTEM_RESIK_LAPOR
 {
@@ -15,6 +16,10 @@ namespace SISTEM_RESIK_LAPOR
     {
         string connString = "Data Source=LAPTOP-7BCU6RBN\\TASYAMAULIDA; Initial Catalog=DBResikLaporADO; Integrated Security=True";
         SqlConnection conn;
+
+        private BindingSource bindingSource = new BindingSource();
+        private DataTable dtSetoran = new DataTable();
+
         int idUserLogin;
         string roleUser;
         int selectedIdSetoran;
@@ -22,46 +27,104 @@ namespace SISTEM_RESIK_LAPOR
         {
             InitializeComponent();
             idUserLogin = idUser;
-            roleUser = role?.ToLower() ?? "";
+            roleUser = role.ToLower();
+
+            this.Load += Form3_Load;
 
             MessageBox.Show("Role: " + roleUser);
 
-            if (roleUser == "masyarakat")
+            if (roleUser.ToLower() == "masyarakat")
             {
                 btnUpdate.Visible = false;
+                btnTampilkan.Visible = false;
                 cmbStatus.Enabled = false;
-                txtPoint.Enabled = false;
             }
         }
-
-        
-        void LoadData()
+        private void LoadData()
         {
             try
             {
                 using (SqlConnection conn = new SqlConnection(connString))
                 {
-                    conn.Open();
-
-                    string query = (roleUser == "masyarakat")
-                        ? "SELECT * FROM Setoran WHERE id_user=@id"
-                        : "SELECT * FROM Setoran";
-
-                    SqlCommand cmd = new SqlCommand(query, conn);
+                    SqlCommand cmd;
 
                     if (roleUser == "masyarakat")
+                    {
+                        string query = "SELECT * FROM Setoran WHERE id_user=@id";
+
+                        cmd = new SqlCommand(query, conn);
                         cmd.Parameters.AddWithValue("@id", idUserLogin);
+                    }
+                    else
+                    {
+                        cmd = new SqlCommand("sp_GetSetoran", conn);
+                        cmd.CommandType = CommandType.StoredProcedure;
+                    }
 
-                    SqlDataAdapter da = new SqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        dtSetoran = new DataTable();
 
-                    dataGridView1.DataSource = dt;
+                        da.Fill(dtSetoran);
+
+                        bindingSource.DataSource = dtSetoran;
+
+                        dataGridView1.DataSource = bindingSource;
+
+                        BindControls();
+                    }
+                }
+
+                HitungJumlah();
+                HitungPoinMasyarakat();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Gagal load data: "
+                    + ex.Message);
+            }
+        }
+        private void BindControls()
+        {
+            txtBerat.DataBindings.Clear();
+            txtJenis.DataBindings.Clear();
+            txtPoint.DataBindings.Clear();
+            cmbStatus.DataBindings.Clear();
+
+            txtBerat.DataBindings.Add("Text", bindingSource, "berat_kg");
+            txtJenis.DataBindings.Add("Text", bindingSource, "nama_jenis_sampah");
+            txtPoint.DataBindings.Add("Text", bindingSource, "poin_per_kg");
+            cmbStatus.DataBindings.Add("Text", bindingSource,"status_verifikasi");
+        }
+        private void HitungJumlah()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_CountSetoran", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        SqlParameter outputParam = new SqlParameter("@jumlah", SqlDbType.Int);
+
+                        outputParam.Direction = ParameterDirection.Output;
+
+                        cmd.Parameters.Add(outputParam);
+
+                        conn.Open();
+
+                        cmd.ExecuteNonQuery();
+
+                        lblTotalSetoran.Text = "Total Setoran: " + outputParam.Value.ToString();
+                    }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(
+                    "Gagal menghitung total: " + ex.Message);
             }
         }
         private void Form3_Load(object sender, EventArgs e)
@@ -69,15 +132,40 @@ namespace SISTEM_RESIK_LAPOR
             conn = new SqlConnection(connString);
 
             LoadComboStatus();
-            LoadData();
-            lblTotalSetoran.Text = "Total Laporan: " + HitungTotalSetoran();
+
+            btnInsert.Visible = false;
+            btnUpdate.Visible = false;
 
             if (roleUser == "masyarakat")
             {
+                btnInsert.Visible = true;
                 btnUpdate.Enabled = false;
                 cmbStatus.Enabled = false;
                 txtPoint.Enabled = false;
             }
+            else if (roleUser == "admin")
+            {
+                btnInsert.Visible = false;
+                btnUpdate.Visible = true;
+                txtJenis.ReadOnly = true;
+                txtBerat.ReadOnly = true;
+                txtPoint.ReadOnly = false;
+                cmbStatus.Enabled = true;
+            }
+
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView1.MultiSelect = false;
+            dataGridView1.ReadOnly = true;
+            dataGridView1.AllowUserToAddRows = false;
+
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
+           
+            dataGridView1.ScrollBars = ScrollBars.Both;
+
+            LoadData();
+            HitungJumlah();
+            HitungPoinMasyarakat();
         }
         void LoadComboStatus()
         {
@@ -133,36 +221,104 @@ namespace SISTEM_RESIK_LAPOR
 
         private void btnInsert_Click(object sender, EventArgs e)
         {
-           
             try
             {
-                if (conn == null)
+                string jenis = txtJenis.Text.Trim();
+
+                string beratText = txtBerat.Text.Trim();
+
+                if (string.IsNullOrEmpty(jenis))
                 {
-                    conn = new SqlConnection(connString);
+                    MessageBox.Show("Pemberitahuan: Kolom Jenis Sampah belum diisi!",
+                        "Data Belum Lengkap", 
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    txtJenis.Focus();
+                    return;
                 }
-                conn.Open();
 
-                string query = @"INSERT INTO Setoran
-                        (id_user, berat_kg, nama_jenis_sampah, poin_per_kg, total_poin_setoran, status_verifikasi)
-                        VALUES
-                        (@id, @berat, @jenis, 0, 0, 'pending')";
+                if (string.IsNullOrEmpty(beratText))
+                {
+                    MessageBox.Show(
+                        "Pemberitahuan: Kolom Berat belum diisi!",
+                        "Data Belum Lengkap",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
 
-                SqlCommand cmd = new SqlCommand(query, conn);
+                    txtBerat.Focus();
 
-                cmd.Parameters.AddWithValue("@id", idUserLogin);
-                cmd.Parameters.AddWithValue("@berat", Convert.ToDouble(txtBerat.Text));
-                cmd.Parameters.AddWithValue("@jenis", txtJenis.Text);
+                    return;
+                }
 
-                cmd.ExecuteNonQuery();
+                if (!double.TryParse(
+                    beratText,
+                    out double berat))
+                {
+                    MessageBox.Show(
+                        "Berat harus berupa angka!",
+                        "Validasi Gagal",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
 
-                MessageBox.Show("Setoran berhasil dikirim");
+                    return;
+                }
 
-                conn.Close();
+                if (berat <= 0)
+                {
+                    MessageBox.Show(
+                        "Berat harus lebih dari 0!",
+                        "Validasi Gagal",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+
+                    return;
+                }
+
+                if (!IsValidText(jenis))
+                {
+                    MessageBox.Show(
+                        "Jenis hanya boleh huruf!",
+                        "Validasi Gagal",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+
+                    return;
+                }
+
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_InsertSetoran", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@id_user", idUserLogin);
+                        cmd.Parameters.AddWithValue("@berat_kg", Convert.ToInt32(berat));
+                        cmd.Parameters.AddWithValue("@nama_jenis_sampah", jenis);
+                        cmd.Parameters.AddWithValue("@poin_per_kg", 0);
+
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                MessageBox.Show(
+                    "Setoran berhasil dikirim",
+                    "Sukses",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
                 LoadData();
+
+                txtJenis.Clear();
+                txtBerat.Clear();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(
+                    "Error: " + ex.Message,
+                    "Kesalahan Sistem",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -171,12 +327,14 @@ namespace SISTEM_RESIK_LAPOR
             if (roleUser != "admin")
             {
                 MessageBox.Show("Hanya admin yang boleh update!");
+
                 return;
             }
 
             if (selectedIdSetoran == 0)
             {
                 MessageBox.Show("Pilih data dulu!");
+
                 return;
             }
 
@@ -184,29 +342,22 @@ namespace SISTEM_RESIK_LAPOR
             {
                 using (SqlConnection conn = new SqlConnection(connString))
                 {
-                    conn.Open();
+                    using (SqlCommand cmd = new SqlCommand("sp_UpdateSetoran", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@id_setoran", selectedIdSetoran);
+                        cmd.Parameters.AddWithValue("@berat_kg", Convert.ToInt32 (txtBerat.Text));
+                        cmd.Parameters.AddWithValue("@nama_jenis_sampah", txtJenis.Text);
+                        cmd.Parameters.AddWithValue("@poin_per_kg", Convert.ToInt32 (txtPoint.Text));
+                        cmd.Parameters.AddWithValue("@status_verifikasi", cmbStatus.Text);
 
-                    int poinPerKg = Convert.ToInt32(txtPoint.Text);
-                    double berat = Convert.ToDouble(txtBerat.Text);
-                    int total = (int)(poinPerKg * berat);
-
-                    string query = @"UPDATE Setoran
-                            SET poin_per_kg=@ppk,
-                                total_poin_setoran=@total,
-                                status_verifikasi=@status
-                            WHERE id_setoran=@id";
-
-                    SqlCommand cmd = new SqlCommand(query, conn);
-
-                    cmd.Parameters.AddWithValue("@ppk", poinPerKg);
-                    cmd.Parameters.AddWithValue("@total", total);
-                    cmd.Parameters.AddWithValue("@status", cmbStatus.Text);
-                    cmd.Parameters.AddWithValue("@id", selectedIdSetoran);
-
-                    cmd.ExecuteNonQuery();
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
                 }
 
                 MessageBox.Show("Berhasil diverifikasi!");
+
                 LoadData();
             }
             catch (Exception ex)
@@ -217,51 +368,65 @@ namespace SISTEM_RESIK_LAPOR
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.CurrentRow == null)
-            {
-                MessageBox.Show("Pilih data dulu!");
-                return;
-            }
-
-            int idSetoran = Convert.ToInt32(dataGridView1.CurrentRow.Cells["id_setoran"].Value);
-
             try
             {
-                using (SqlConnection conn = new SqlConnection(connString))
+                if (dataGridView1.CurrentRow == null)
                 {
-                    conn.Open();
+                    MessageBox.Show(
+                        "Pilih data dulu!",
+                        "Peringatan",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
 
-                    string query;
-                    SqlCommand cmd;
-
-                    if (roleUser.Trim().ToLower() == "admin")
-                    {
-                        query = "DELETE FROM Setoran WHERE id_setoran=@id";
-                        cmd = new SqlCommand(query, conn);
-                        cmd.Parameters.AddWithValue("@id", idSetoran);
-                    }
-                    else
-                    {
-                        query = "DELETE FROM Setoran WHERE id_setoran=@id AND id_user=@user";
-                        cmd = new SqlCommand(query, conn);
-
-                        cmd.Parameters.AddWithValue("@id", idSetoran);
-                        cmd.Parameters.AddWithValue("@user", idUserLogin);
-                    }
-
-                    int rows = cmd.ExecuteNonQuery();
-
-                    if (rows == 0)
-                        MessageBox.Show("Data tidak ditemukan atau bukan milik user ini!");
-                    else
-                        MessageBox.Show("Berhasil dihapus");
+                    return;
                 }
 
+                int idSetoran =
+                    Convert.ToInt32(
+                        dataGridView1.CurrentRow
+                        .Cells["id_setoran"].Value);
+
+                DialogResult result =
+                    MessageBox.Show(
+                        "Yakin ingin menghapus data?",
+                        "Konfirmasi",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+
+                if (result == DialogResult.No)
+                {
+                    return;
+                }
+
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_DeleteSetoran", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@id_setoran", idSetoran);
+
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                MessageBox.Show(
+                    "Data berhasil dihapus!",
+                    "Sukses",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
                 LoadData();
+                HitungJumlah();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(
+                    "Error saat menghapus: "
+                    + ex.Message,
+                    "Kesalahan Sistem",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -287,12 +452,19 @@ namespace SISTEM_RESIK_LAPOR
             {
                 DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
 
-                selectedIdSetoran = Convert.ToInt32(row.Cells["id_setoran"].Value);
+                if (row.Cells["id_setoran"].Value != null && row.Cells["id_setoran"].Value != DBNull.Value)
+                {
+                    selectedIdSetoran = Convert.ToInt32(row.Cells["id_setoran"].Value);
+                }
+                else
+                {
+                    selectedIdSetoran = 0;
+                }
 
-                txtBerat.Text = row.Cells["berat_kg"].Value.ToString();
-                txtJenis.Text = row.Cells["nama_jenis_sampah"].Value.ToString();
-                txtPoint.Text = row.Cells["poin_per_kg"].Value.ToString();
-                cmbStatus.Text = row.Cells["status_verifikasi"].Value.ToString();
+                txtBerat.Text = row.Cells["berat_kg"].Value?.ToString() ?? "0";
+                txtJenis.Text = row.Cells["nama_jenis_sampah"].Value?.ToString() ?? "";
+                txtPoint.Text = row.Cells["poin_per_kg"].Value?.ToString() ?? "0";
+                cmbStatus.Text = row.Cells["status_verifikasi"].Value?.ToString() ?? "pending";
             }
 
         }
@@ -302,6 +474,127 @@ namespace SISTEM_RESIK_LAPOR
             int total = HitungTotalSetoran();
             lblTotalSetoran.Text = "Total Setoran: " + total;
         }
+
+        private bool IsValidText(string input)
+        {
+            return Regex.IsMatch(input, @"^[a-zA-Z\s]+$");
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form3_Load_1(object sender, EventArgs e)
+        {
+            this.setoranTableAdapter.Fill(this.dBResikLaporADODataSet3.Setoran);
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            DataTable dt = (DataTable)dataGridView1.DataSource;
+
+            if (dt != null)
+            {
+                dt.DefaultView.RowFilter = string.Format("nama_jenis_sampah LIKE '%{0}%'", txtSearch.Text);
+            }
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_SearchSetoran", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@keyword", txtSearch.Text);
+
+                        SqlDataAdapter da = new SqlDataAdapter(cmd);
+
+                        DataTable dt = new DataTable();
+
+                        da.Fill(dt);
+
+                        dataGridView1.DataSource = dt;
+
+                        if (dt.Rows.Count == 0)
+                        {
+                            MessageBox.Show(
+                                "Data tidak ditemukan!");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Terjadi kesalahan saat mencari: "
+                    + ex.Message);
+            }
+        }
+
+        private void txtBerat_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsDigit(e.KeyChar) || char.IsControl(e.KeyChar))
+            {
+                return; 
+            }
+
+            e.Handled = true;
+        }
+
+        private void txtPoint_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsDigit(e.KeyChar) || char.IsControl(e.KeyChar))
+            {
+                return; 
+            }
+
+            e.Handled = true;
+        }
+
+        private void HitungPoinMasyarakat()
+        {
+            if (roleUser != "masyarakat")
+            {
+                lblTotalPoinKeseluruhan.Text = "Total Poin: (Hanya untuk Masyarakat)";
+                return;
+            }
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    string query = "SELECT ISNULL(SUM(total_poin_setoran), 0) FROM Setoran WHERE id_user = @id_user AND status_verifikasi = 'verifikasi'";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id_user", idUserLogin);
+
+                        conn.Open();
+
+                        int totalPoin = Convert.ToInt32(cmd.ExecuteScalar());
+
+ 
+                        lblTotalPoinKeseluruhan.Text = "Total Poin Keseluruhan: " + totalPoin + " Poin";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Gagal memuat total poin keseluruhan: " + ex.Message, "Kesalahan Sistem", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
     
 }
+
+
