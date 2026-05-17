@@ -269,7 +269,12 @@ namespace SISTEM_RESIK_LAPOR
 
         private void txtFoto_KeyPress(object sender, KeyPressEventArgs e)
         {
-           
+            if (char.IsLetter(e.KeyChar) || char.IsControl(e.KeyChar) ||
+                e.KeyChar == '.' || e.KeyChar == '_' || e.KeyChar == '-')
+            {
+                return;
+            }
+            e.Handled = true;
         }
     }
 }
