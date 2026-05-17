@@ -31,6 +31,11 @@ namespace SISTEM_RESIK_LAPOR
             return Regex.IsMatch(email, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
         }
 
+        private bool IsValidPassword(string password)
+        {
+            return Regex.IsMatch(password, @".+");
+        }
+
        
 
         private void btnRegistrasi_Click(object sender, EventArgs e)
@@ -64,7 +69,6 @@ namespace SISTEM_RESIK_LAPOR
                 return;
             }
 
-            
            
         }
 
@@ -75,7 +79,8 @@ namespace SISTEM_RESIK_LAPOR
 
         private void textAlamat_KeyPress(object sender, KeyPressEventArgs e)
         {
-            
+  
+           
         }
     }
 }
