@@ -123,7 +123,18 @@ namespace SISTEM_RESIK_LAPOR
             }
         }
         
-        
+        private void BindControls()
+        {
+            txtDeskripsi.DataBindings.Clear();
+            txtFoto.DataBindings.Clear();
+            txtLokasi.DataBindings.Clear();
+            cmbStatus.DataBindings.Clear();
+
+            txtDeskripsi.DataBindings.Add("Text", bindingSource, "deskripsi");
+            txtFoto.DataBindings.Add("Text", bindingSource, "foto");
+            txtLokasi.DataBindings.Add("Text", bindingSource, "lokasi_maps");
+            cmbStatus.DataBindings.Add("Text", bindingSource, "status");
+        }
 
         private void label4_Click(object sender, EventArgs e)
         {
