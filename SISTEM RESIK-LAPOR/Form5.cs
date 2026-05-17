@@ -26,6 +26,11 @@ namespace SISTEM_RESIK_LAPOR
             return Regex.IsMatch(nama, @"^[a-zA-Z\s]+$");
         }
 
+        private bool IsValidEmail(string email)
+        {
+            return Regex.IsMatch(email, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
+        }
+
        
 
         private void btnRegistrasi_Click(object sender, EventArgs e)
@@ -47,7 +52,20 @@ namespace SISTEM_RESIK_LAPOR
                 return;
             }
 
+            if (!IsValidEmail(email))
+            {
+                MessageBox.Show("Format email tidak valid atau mengandung karakter terlarang!");
+                return;
+            }
+
+            if (password.Length < 6)
+            {
+                MessageBox.Show("Password minimal 6 karakter!");
+                return;
+            }
+
             
+           
         }
 
         private void textAlamat_TextChanged(object sender, EventArgs e)
