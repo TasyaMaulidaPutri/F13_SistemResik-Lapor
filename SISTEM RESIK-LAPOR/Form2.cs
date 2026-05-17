@@ -142,7 +142,48 @@ namespace SISTEM_RESIK_LAPOR
 
         private void button2_Click(object sender, EventArgs e)
         {
-            
+            try
+            {
+                if (roleUser != "admin")
+                {
+                    MessageBox.Show("Hanya admin yang bisa update!");
+                    return;
+                }
+
+                if (dataGridView1.CurrentRow == null)
+                {
+                    MessageBox.Show("Pilih data dulu!");
+                    return;
+                }
+
+                int idlap = Convert.ToInt32(dataGridView1.CurrentRow.Cells["id_laporan"].Value);
+
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    using (SqlCommand cmd =
+                        new SqlCommand("sp_UpdateLaporan", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@id_laporan", idlap);
+                        cmd.Parameters.AddWithValue("@deskripsi", txtDeskripsi.Text);
+                        cmd.Parameters.AddWithValue("@foto", txtFoto.Text);
+                        cmd.Parameters.AddWithValue("@lokasi_maps", txtLokasi.Text);
+                        cmd.Parameters.AddWithValue("@status", cmbStatus.Text);
+
+                        conn.Open();
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                MessageBox.Show("Data berhasil diupdate");
+
+                LoadData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void label16_Click(object sender, EventArgs e)
