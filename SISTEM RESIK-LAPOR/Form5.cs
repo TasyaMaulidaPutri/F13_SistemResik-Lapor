@@ -78,7 +78,46 @@ namespace SISTEM_RESIK_LAPOR
                 return; 
             }
 
-            
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    conn.Open();
+
+                    string cek = "SELECT COUNT(*) FROM Users WHERE email=@email";
+                    SqlCommand cmdCek = new SqlCommand(cek, conn);
+                    cmdCek.Parameters.AddWithValue("@email", email);
+
+                    int count = (int)cmdCek.ExecuteScalar();
+                    if (count > 0)
+                    {
+                        MessageBox.Show("Email sudah terdaftar!");
+                        return;
+                    }
+
+                    string query = @"INSERT INTO Users (nama, email, password, alamat, role) 
+                             VALUES (@nama, @email, @password, @alamat, @role)";
+
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@nama", nama);
+                    cmd.Parameters.AddWithValue("@email", email);
+                    cmd.Parameters.AddWithValue("@password", password);
+                    cmd.Parameters.AddWithValue("@alamat", alamat);
+                    cmd.Parameters.AddWithValue("@role", "Masyarakat");
+
+                    cmd.ExecuteNonQuery();
+
+                    MessageBox.Show("Registrasi berhasil!");
+
+                    Form1 login = new Form1();
+                    login.Show();
+                    this.Hide();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
         }
 
         private void textAlamat_TextChanged(object sender, EventArgs e)
@@ -89,7 +128,7 @@ namespace SISTEM_RESIK_LAPOR
         private void textAlamat_KeyPress(object sender, KeyPressEventArgs e)
         {
     
-            
+           
         }
     }
 }
