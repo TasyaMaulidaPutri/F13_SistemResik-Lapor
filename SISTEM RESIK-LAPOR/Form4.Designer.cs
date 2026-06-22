@@ -35,6 +35,7 @@
             this.btnKelolaLaporan = new System.Windows.Forms.Button();
             this.btnVerifikasiSetoran = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
+            this.btnDashboard = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -113,11 +114,23 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
+            // btnDashboard
+            // 
+            this.btnDashboard.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.btnDashboard.Location = new System.Drawing.Point(489, 287);
+            this.btnDashboard.Name = "btnDashboard";
+            this.btnDashboard.Size = new System.Drawing.Size(213, 45);
+            this.btnDashboard.TabIndex = 7;
+            this.btnDashboard.Text = "Dashboard Grafik";
+            this.btnDashboard.UseVisualStyleBackColor = true;
+            this.btnDashboard.Click += new System.EventHandler(this.button1_Click_1);
+            // 
             // Form4
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnDashboard);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.btnVerifikasiSetoran);
             this.Controls.Add(this.btnKelolaLaporan);
@@ -141,5 +154,6 @@
         private System.Windows.Forms.Button btnKelolaLaporan;
         private System.Windows.Forms.Button btnVerifikasiSetoran;
         private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button btnDashboard;
     }
 }

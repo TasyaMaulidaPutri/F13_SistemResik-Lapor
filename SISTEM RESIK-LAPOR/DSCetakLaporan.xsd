@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DSCetakLaporan" targetNamespace="http://tempuri.org/DSCetakLaporan.xsd" xmlns:mstns="http://tempuri.org/DSCetakLaporan.xsd" xmlns="http://tempuri.org/DSCetakLaporan.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="DBResikLaporADOConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="DBResikLaporADOConnectionString (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.SISTEM_RESIK_LAPOR.Properties.Settings.GlobalReference.Default.DBResikLaporADOConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="DataTable1TableAdapter" GeneratorDataComponentClassName="DataTable1TableAdapter" Name="DataTable1" UserDataComponentName="DataTable1TableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="DBResikLaporADOConnectionString (Settings)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT 
+    l.id_laporan,
+    u.nama AS Nama,
+    l.deskripsi,
+    l.lokasi_maps,
+    l.status,
+    l.tanggal_lapor
+FROM Laporan l
+JOIN Users u ON l.id_user = u.id_user</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="id_laporan" DataSetColumn="id_laporan" />
+              <Mapping SourceColumn="Nama" DataSetColumn="Nama" />
+              <Mapping SourceColumn="deskripsi" DataSetColumn="deskripsi" />
+              <Mapping SourceColumn="lokasi_maps" DataSetColumn="lokasi_maps" />
+              <Mapping SourceColumn="status" DataSetColumn="status" />
+              <Mapping SourceColumn="tanggal_lapor" DataSetColumn="tanggal_lapor" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DSCetakLaporan" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_UserDSName="DSCetakLaporan" msprop:Generator_DataSetName="DSCetakLaporan">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_RowClassName="DataTable1Row" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_UserTableName="DataTable1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="id_laporan" msdata:ReadOnly="true" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnPropNameInRow="id_laporan" msprop:Generator_ColumnPropNameInTable="id_laporanColumn" msprop:Generator_ColumnVarNameInTable="columnid_laporan" msprop:Generator_UserColumnName="id_laporan" type="xs:int" />
+              <xs:element name="Nama" msprop:Generator_ColumnPropNameInRow="Nama" msprop:Generator_ColumnPropNameInTable="NamaColumn" msprop:Generator_ColumnVarNameInTable="columnNama" msprop:Generator_UserColumnName="Nama">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="deskripsi" msprop:Generator_ColumnPropNameInRow="deskripsi" msprop:Generator_ColumnPropNameInTable="deskripsiColumn" msprop:Generator_ColumnVarNameInTable="columndeskripsi" msprop:Generator_UserColumnName="deskripsi" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="lokasi_maps" msprop:Generator_ColumnPropNameInRow="lokasi_maps" msprop:Generator_ColumnPropNameInTable="lokasi_mapsColumn" msprop:Generator_ColumnVarNameInTable="columnlokasi_maps" msprop:Generator_UserColumnName="lokasi_maps" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="status" msprop:Generator_ColumnPropNameInRow="status" msprop:Generator_ColumnPropNameInTable="statusColumn" msprop:Generator_ColumnVarNameInTable="columnstatus" msprop:Generator_UserColumnName="status" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="tanggal_lapor" msprop:Generator_ColumnPropNameInRow="tanggal_lapor" msprop:Generator_ColumnPropNameInTable="tanggal_laporColumn" msprop:Generator_ColumnVarNameInTable="columntanggal_lapor" msprop:Generator_UserColumnName="tanggal_lapor" type="xs:dateTime" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:DataTable1" />
+      <xs:field xpath="mstns:id_laporan" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

@@ -32,6 +32,7 @@ namespace SISTEM_RESIK_LAPOR
             btnSetoran.Visible = false;
             btnKelolaLaporan.Visible = false;
             btnVerifikasiSetoran.Visible = false;
+            btnDashboard.Visible = false; // Dashboard disembunyikan dulu
 
             if (roleUser == "masyarakat")
             {
@@ -42,6 +43,7 @@ namespace SISTEM_RESIK_LAPOR
             {
                 btnKelolaLaporan.Visible = true;
                 btnVerifikasiSetoran.Visible = true;
+                btnDashboard.Visible = true;
             }
         }
 
@@ -103,6 +105,20 @@ namespace SISTEM_RESIK_LAPOR
 
             Form3 f3 = new Form3(idUserLogin, roleUser);
             f3.Show();
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            if (roleUser != "admin")
+            {
+                MessageBox.Show("Akses ditolak!");
+                return;
+            }
+
+            Dashboard frmDashboard = new Dashboard();
+            frmDashboard.Show();
+
+            this.Hide();
         }
     }
 }

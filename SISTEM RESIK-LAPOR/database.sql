@@ -79,270 +79,283 @@ INTO Laporan_Backup
 FROM Laporan;
 
 --stored procedure select
-CREATE PROCEDURE sp_GetLaporan
+ALTER PROCEDURE sp_GetMahasiswa
 AS
 BEGIN
-    SET NOCOUNT ON;
-
     SELECT
-        id_laporan,
-        id_user,
-        deskripsi,
-        foto,
-        lokasi_maps,
-        status
-    FROM vwLaporanPublic
+        mahasiswa.NIM as NIM,
+        mahasiswa.Nama as Nama,
+        mahasiswa.JenisKelamin as JenisKelamin,
+        mahasiswa.TanggalLahir as TanggalLahir,
+        mahasiswa.Alamat as Alamat,
+        mahasiswa.Foto as Foto,
+		mahasiswa.KodeProdi,
+        ProgramStudi.NamaProdi as NamaProdi
+    FROM
+        Mahasiswa
+    JOIN
+        ProgramStudi
+    ON mahasiswa.KodeProdi = ProgramStudi.KodeProdi;
 END
 
---stored procedure select parameter
-CREATE PROCEDURE sp_GetLaporanById
-    @id_laporan INT
+/*=====================================================
+2. STORED PROCEDURE SELECT BY NIM
+=======================================================*/
+ALTER PROCEDURE sp_GetMahasiswaByNIM
+@pNIM char(11)
 AS
 BEGIN
-    SET NOCOUNT ON;
-
     SELECT
-        id_laporan,
-        id_user,
-        deskripsi,
-        foto,
-        lokasi_maps,
-        status
-    FROM vwLaporanPublic
-    WHERE id_laporan = @id_laporan
+        mahasiswa.NIM,
+        mahasiswa.Nama,
+        mahasiswa.JenisKelamin,
+        mahasiswa.TanggalLahir,
+        mahasiswa.Alamat,
+        mahasiswa.Foto as Foto,
+		mahasiswa.KodeProdi,
+        ProgramStudi.NamaProdi
+    FROM
+        Mahasiswa
+    JOIN
+        ProgramStudi
+    ON mahasiswa.KodeProdi = ProgramStudi.KodeProdi
+    WHERE mahasiswa.NIM = @pNIM;
 END
 
---Stroed procedure insert
-CREATE PROCEDURE sp_InsertLaporan
-    @id_user INT,
-    @deskripsi VARCHAR(255),
-    @foto VARCHAR(255),
-    @lokasi_maps VARCHAR(255)
+/*======================================================
+3. STORED PROCEDURE INSERT
+========================================================*/
+ALTER PROCEDURE sp_InsertMahasiswa
+@pNIM char(11),
+@pNama varchar(100),
+@pAlamat varchar(200),
+@pJenisKelamin char(1),
+@pTanggalLahir datetime,
+@pKodeProdi char(4),
+@pFoto varbinary(max)
 AS
 BEGIN
-    INSERT INTO Laporan
-    (id_user, deskripsi, foto, lokasi_maps, status)
+    INSERT INTO Mahasiswa
+    (NIM, Nama, Alamat, JenisKelamin, TanggalLahir, KodeProdi, TanggalDaftar, foto)
     VALUES
-    (@id_user, @deskripsi, @foto, @lokasi_maps, 'lapor')
+    (@pNIM, @pNama, @pAlamat, @pJenisKelamin, @pTanggalLahir, @pKodeProdi, GETDATE(), @pFoto);
 END
 
---Stored procedure update
-CREATE PROCEDURE sp_UpdateLaporan
-    @id_laporan INT,
-    @deskripsi VARCHAR(255),
-    @foto VARCHAR(255),
-    @lokasi_maps VARCHAR(255),
-    @status VARCHAR(50)
+/*========================================================
+4. STORED PROCEDURE UPDATE
+===========================================================*/
+ALTER PROCEDURE sp_UpdateMahasiswa
+@pNIM char(11),
+@pNama varchar(100),
+@pAlamat varchar(200),
+@pJenisKelamin char(1),
+@pTanggalLahir datetime,
+@pKodeProdi char(4),
+@pFoto varbinary(max)
 AS
 BEGIN
-    UPDATE Laporan
-    SET
-        deskripsi = @deskripsi,
-        foto = @foto,
-        lokasi_maps = @lokasi_maps,
-        status = @status
-    WHERE id_laporan = @id_laporan
+    UPDATE Mahasiswa
+    SET Nama = @pNama, Alamat = @pAlamat, JenisKelamin = @pJenisKelamin,
+        TanggalLahir = @pTanggalLahir, KodeProdi = @pKodeProdi, foto = @pFoto
+    WHERE NIM = @pNIM;
 END
 
---stored procedure delete
-CREATE PROCEDURE sp_DeleteLaporan
-    @id_laporan INT
+/*=========================================================
+5. STORED PROCEDURE DELETE
+===========================================================*/
+CREATE PROCEDURE sp_DeleteMahasiswa
+	@NIM CHAR(11)
 AS
 BEGIN
-    DELETE FROM Laporan
-    WHERE id_laporan = @id_laporan
+	SET NOCOUNT ON;
+
+	DELETE FROM Mahasiswa
+	WHERE NIM = @NIM
 END
 
---stored procedure search
-CREATE PROCEDURE sp_SearchLaporan
-    @keyword VARCHAR(255)
+/*============================================================
+6. STORED PROCEDURE COUNT (OUTPUT PARAMETER)
+===============================================================*/
+CREATE PROCEDURE sp_CountMahasiswa
+	@Total INT OUTPUT
 AS
 BEGIN
-    SELECT *
-    FROM vwLaporanPublic
+	SET NOCOUNT ON;
+	SELECT @Total = COUNT(*) FROM Mahasiswa
+END
+
+/*===============================================================
+STORED PROCEDURE DASHBOARD
+=================================================================*/
+CREATE PROCEDURE sp_DashBoard
+AS
+BEGIN
+    SELECT
+        ProgramStudi.NamaProdi as NamaProdi,
+        count(mahasiswa.KodeProdi) as JmlMhs
+    FROM
+        Mahasiswa
+    JOIN
+        ProgramStudi
+    ON mahasiswa.KodeProdi = ProgramStudi.KodeProdi
+    GROUP BY ProgramStudi.NamaProdi;
+END
+
+CREATE PROCEDURE sp_DashBoardByTahun
+    @inTglMsuk char(4)
+AS
+BEGIN
+    SELECT
+        ProgramStudi.NamaProdi as NamaProdi,
+        count(mahasiswa.KodeProdi) as JmlMhs
+    FROM
+        Mahasiswa
+    JOIN
+        ProgramStudi
+    ON mahasiswa.KodeProdi = ProgramStudi.KodeProdi
+    WHERE YEAR(mahasiswa.TanggalDaftar) = @inTglMsuk
+    GROUP BY ProgramStudi.NamaProdi;
+END
+
+/*===============================================================
+Membuat Tabel Logging
+=================================================================*/
+CREATE TABLE LogError
+(
+	id_log INT IDENTITY(1,1) PRIMARY KEY,
+	waktu DATETIME,
+	pesan_error VARCHAR(MAX)
+);
+
+CREATE TABLE LogAktivitas
+(
+	id_log INT IDENTITY,
+	aktivitas VARCHAR(100),
+	waktu DATETIME
+);
+
+CREATE TRIGGER trg_InsertMahasiswa
+ON Mahasiswa
+AFTER INSERT
+AS
+BEGIN
+	INSERT INTO LogAktivitas
+	VALUES('Tambah data mahasiswa', GETDATE());
+END;
+
+select * from LogAktivitas
+select * from LogError
+
+CREATE TRIGGER trg_DeleteMahasiswa
+ON Mahasiswa
+AFTER DELETE
+AS
+BEGIN
+	INSERT INTO LogAktivitas
+	VALUES('Hapus data mahasiswa', GETDATE());
+END;
+
+CREATE TABLE LogKeamanan
+(
+	id_log INT IDENTITY(1,1),
+	aktivitas VARCHAR(200),
+	jumlah_data INT,
+	waktu DATETIME
+);
+
+CREATE TRIGGER trg_PreventMassUpdate
+ON Mahasiswa
+AFTER UPDATE
+AS
+BEGIN
+	DECLARE @jumlah INT;
+
+	SELECT @jumlah = COUNT(*) FROM inserted;
+
+	-- jika update lebih dari 5 data
+	IF @jumlah > 5
+	BEGIN
+		-- Simpan log keamanan
+		INSERT INTO LogKeamanan
+		VALUES(
+			'WARNING : Update massal terdeteksi',
+			@jumlah,
+			GETDATE()
+		);
+
+		--Membatalkan transaksi
+		ROLLBACK TRANSACTION
+
+		--Menampilkan pesan error
+		RAISERROR(
+		'Update dibatalkan! Terlalu banyak data diubah.',
+		16,
+		1
+		);
+	END
+END;
+
+CREATE PROCEDURE sp_Report
+    @inProdi char(50),
+    @inTglMsuk char(4)
+AS
+BEGIN
+
+    SELECT
+        mahasiswa.Nama as Nama,
+        mahasiswa.JenisKelamin as JenisKelamin,
+        mahasiswa.Alamat as Alamat,
+        ProgramStudi.NamaProdi as NamaProdi,
+        mahasiswa.TanggalDaftar as TanggalDaftar
+
+    FROM
+        Mahasiswa
+
+    JOIN
+        ProgramStudi
+
+    ON mahasiswa.KodeProdi = ProgramStudi.KodeProdi
+
     WHERE
-        deskripsi LIKE '%' + @keyword + '%'
-        OR lokasi_maps LIKE '%' + @keyword + '%'
-        OR CAST(id_laporan AS VARCHAR) LIKE '%' + @keyword + '%'
+        ProgramStudi.NamaProdi = @inProdi
+        AND YEAR(mahasiswa.TanggalDaftar) = @inTglMsuk;
+
 END
 
---Stored Procedure COUNT (OUTPUT PARAMETER)
-CREATE PROCEDURE sp_CountLaporan
-    @jumlah INT OUTPUT
-AS
-BEGIN
-    SELECT @jumlah = COUNT(*) FROM Laporan
-END
+alter table mahasiswa
+add foto varbinary(max);
 
---====================================
--- CREATE VIEW
---===================================
-CREATE VIEW vwSetoranPublic AS
-SELECT
-    id_setoran,
-    id_user,
-    berat_kg,
-    nama_jenis_sampah,
-    poin_per_kg,
-    total_poin_setoran,
-    status_verifikasi
-FROM Setoran;
-GO
--- =========================================
--- STORED PROCEDURE SELECT ALL SETORAN
--- =========================================
-CREATE PROCEDURE sp_GetSetoran
+ALTER LOGIN sa WITH PASSWORD = 'tasya123';
+ALTER LOGIN sa ENABLE;
+
+EXEC sp_DashBoard
+
+SELECT *
+FROM sys.procedures
+WHERE name = 'sp_LogMessage';
+
+CREATE PROCEDURE sp_LogMessage
+    @psm VARCHAR(MAX)
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT
-        id_setoran,
-        id_user,
-        berat_kg,
-        nama_jenis_sampah,
-        poin_per_kg,
-        total_poin_setoran,
-        status_verifikasi
-    FROM vwSetoranPublic
-END
-GO
-
-
--- =========================================
--- STORED PROCEDURE SELECT SETORAN BY ID
--- =========================================
-CREATE PROCEDURE sp_GetSetoranById
-    @id_setoran INT
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    SELECT
-        id_setoran,
-        id_user,
-        berat_kg,
-        nama_jenis_sampah,
-        poin_per_kg,
-        total_poin_setoran,
-        status_verifikasi
-    FROM vwSetoranPublic
-    WHERE id_setoran = @id_setoran
-END
-GO
-
-
--- =========================================
--- STORED PROCEDURE INSERT SETORAN
--- =========================================
-CREATE PROCEDURE sp_InsertSetoran
-    @id_user INT,
-    @berat_kg INT,
-    @nama_jenis_sampah VARCHAR(100),
-    @poin_per_kg INT
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    DECLARE @total_poin INT
-
-    SET @total_poin = @berat_kg * @poin_per_kg
-
-    INSERT INTO Setoran
+    INSERT INTO LogError
     (
-        id_user,
-        berat_kg,
-        nama_jenis_sampah,
-        poin_per_kg,
-        total_poin_setoran,
-        status_verifikasi
+        waktu,
+        pesan_error
     )
     VALUES
     (
-        @id_user,
-        @berat_kg,
-        @nama_jenis_sampah,
-        @poin_per_kg,
-        @total_poin,
-        'pending'
-    )
+        GETDATE(),
+        @psm
+    );
 END
 GO
 
+EXEC sp_GetMahasiswa
+select* from mahasiswa
 
--- =========================================
--- STORED PROCEDURE UPDATE SETORAN
--- =========================================
-CREATE PROCEDURE sp_UpdateSetoran
-    @id_setoran INT,
-    @berat_kg INT,
-    @nama_jenis_sampah VARCHAR(100),
-    @poin_per_kg INT,
-    @status_verifikasi VARCHAR(20)
-AS
-BEGIN
-    SET NOCOUNT ON;
+SELECT * FROM Mahasiswa ORDER BY TanggalDaftar DESC;
 
-    DECLARE @total_poin INT
-
-    SET @total_poin = @berat_kg * @poin_per_kg
-
-    UPDATE Setoran
-    SET
-        berat_kg = @berat_kg,
-        nama_jenis_sampah = @nama_jenis_sampah,
-        poin_per_kg = @poin_per_kg,
-        total_poin_setoran = @total_poin,
-        status_verifikasi = @status_verifikasi
-    WHERE id_setoran = @id_setoran
-END
-GO
-
-
--- =========================================
--- STORED PROCEDURE DELETE SETORAN
--- =========================================
-CREATE PROCEDURE sp_DeleteSetoran
-    @id_setoran INT
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    DELETE FROM Setoran
-    WHERE id_setoran = @id_setoran
-END
-GO
-
-
--- =========================================
--- STORED PROCEDURE SEARCH SETORAN
--- =========================================
-CREATE PROCEDURE sp_SearchSetoran
-    @keyword VARCHAR(100)
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    SELECT *
-    FROM vwSetoranPublic
-    WHERE
-        nama_jenis_sampah LIKE '%' + @keyword + '%'
-        OR status_verifikasi LIKE '%' + @keyword + '%'
-        OR CAST(id_setoran AS VARCHAR) LIKE '%' + @keyword + '%'
-END
-GO
-
-
--- =========================================
--- STORED PROCEDURE COUNT SETORAN
--- =========================================
-CREATE PROCEDURE sp_CountSetoran
-    @jumlah INT OUTPUT
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    SELECT @jumlah = COUNT(*)
-    FROM vwSetoranPublic
-END
-GO
+SELECT * FROM ProgramStudi;

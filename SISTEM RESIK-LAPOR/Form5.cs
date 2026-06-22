@@ -150,5 +150,10 @@ namespace SISTEM_RESIK_LAPOR
 
             e.Handled = true;
         }
+
+        private void Form5_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

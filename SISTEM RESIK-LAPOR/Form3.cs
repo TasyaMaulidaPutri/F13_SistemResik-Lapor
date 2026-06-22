@@ -142,6 +142,7 @@ namespace SISTEM_RESIK_LAPOR
                 btnUpdate.Enabled = false;
                 cmbStatus.Enabled = false;
                 txtPoint.Enabled = false;
+                btnRekapData.Visible = false;
             }
             else if (roleUser == "admin")
             {
@@ -312,10 +313,20 @@ namespace SISTEM_RESIK_LAPOR
                 txtJenis.Clear();
                 txtBerat.Clear();
             }
+            catch (SqlException ex)
+            {
+                SimpanLog(ex.Message);
+                MessageBox.Show(
+                    "SQL Error: " + ex.Message,
+                    "Kesalahan Sistem",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
             catch (Exception ex)
             {
+                SimpanLog(ex.Message);
                 MessageBox.Show(
-                    "Error: " + ex.Message,
+                    "General Error: " + ex.Message,
                     "Kesalahan Sistem",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -360,9 +371,15 @@ namespace SISTEM_RESIK_LAPOR
 
                 LoadData();
             }
+            catch (SqlException ex)
+            {
+                SimpanLog(ex.Message);
+                MessageBox.Show("SQL Error : " + ex.Message);
+            }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                SimpanLog(ex.Message);
+                MessageBox.Show("General Error : " + ex.Message);
             }
         }
 
@@ -419,11 +436,20 @@ namespace SISTEM_RESIK_LAPOR
                 LoadData();
                 HitungJumlah();
             }
+            catch (SqlException ex)
+            {
+                SimpanLog(ex.Message);
+                MessageBox.Show(
+                    "SQL Error saat menghapus: " + ex.Message,
+                    "Kesalahan Sistem",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
             catch (Exception ex)
             {
+                SimpanLog(ex.Message);
                 MessageBox.Show(
-                    "Error saat menghapus: "
-                    + ex.Message,
+                    "General Error saat menghapus: " + ex.Message,
                     "Kesalahan Sistem",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -592,6 +618,39 @@ namespace SISTEM_RESIK_LAPOR
             {
                 MessageBox.Show("Gagal memuat total poin keseluruhan: " + ex.Message, "Kesalahan Sistem", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+        private void SimpanLog(string pesan)
+        {
+            using (SqlConnection connLog = new SqlConnection(connString))
+            {
+                string query = @"INSERT INTO LogError (waktu, pesan_error)
+                          VALUES (GETDATE(), @pesan)";
+
+                using (SqlCommand cmd = new SqlCommand(query, connLog))
+                {
+                    cmd.Parameters.AddWithValue("@pesan", pesan);
+
+                    connLog.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            FormSetoran frm = new FormSetoran();
+            frm.Show();
+            this.Hide();
+        }
+
+        private void txtJenis_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsLetter(e.KeyChar) || char.IsControl(e.KeyChar) ||
+                e.KeyChar == '.' || e.KeyChar == '_' || e.KeyChar == '-')
+            {
+                return;
+            }
+            e.Handled = true;
         }
     }
     

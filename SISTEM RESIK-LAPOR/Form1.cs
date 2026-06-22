@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace SISTEM_RESIK_LAPOR
 {
-    public partial class Form1 : System.Windows.Forms.Form
+    public partial class Form1 : Form
     {
         string connString = "Data Source=LAPTOP-7BCU6RBN\\TASYAMAULIDA; Initial Catalog=DBResikLaporADO; Integrated Security=True";
         SqlConnection conn;

@@ -4,11 +4,13 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Text.RegularExpressions;
+using ExcelDataReader;
 
 namespace SISTEM_RESIK_LAPOR
 {
@@ -18,6 +20,7 @@ namespace SISTEM_RESIK_LAPOR
         SqlConnection conn;
         private BindingSource bindingSource = new BindingSource();
         private DataTable dtLaporan = new DataTable();
+        byte[] fotoBytes;
 
         int idUserLogin;
         string roleUser;
@@ -29,7 +32,7 @@ namespace SISTEM_RESIK_LAPOR
             idUserLogin = idUser;
             roleUser = role.ToLower();
 
-            this.Load += Form2_Load;
+            this.Load+= Form2_Load;
 
             MessageBox.Show("Role: " + roleUser);
 
@@ -61,7 +64,12 @@ namespace SISTEM_RESIK_LAPOR
                 btnInsert.Visible = true;
                 btnDelete.Visible = true;
 
+                btnRekapData.Visible = false; // Sembunyikan tombol rekap
+
                 cmbStatus.Enabled = false;
+                btnImpDb.Enabled = false;
+                button5.Enabled = false;// Nonaktifkan tombol import untuk masyarakat
+
             }
             else if (roleUser == "admin")
             {
@@ -69,11 +77,14 @@ namespace SISTEM_RESIK_LAPOR
                 btnTampil.Visible = true;
                 btnDelete.Visible = true;
 
+                btnRekapData.Visible = true; // Tampilkan tombol rekap
+
                 txtDeskripsi.ReadOnly = true;
                 txtLokasi.ReadOnly = true;
                 txtFoto.ReadOnly = true;
 
                 cmbStatus.Enabled = true;
+                button1.Enabled = false; // Nonaktifkan tombol pilih foto untuk admin
             }
 
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -92,86 +103,94 @@ namespace SISTEM_RESIK_LAPOR
         {
             try
             {
-                using (SqlConnection conn =
-                    new SqlConnection(connString))
+                using (SqlConnection conn = new SqlConnection(connString))
                 {
                     using (SqlCommand cmd = new SqlCommand("sp_CountLaporan", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         SqlParameter outputParam = new SqlParameter("@jumlah", SqlDbType.Int);
-
                         outputParam.Direction = ParameterDirection.Output;
-
                         cmd.Parameters.Add(outputParam);
 
                         conn.Open();
-
                         cmd.ExecuteNonQuery();
 
-                        lblTotalLaporan.Text =
-                            "Total Laporan: "
-                            + outputParam.Value.ToString();
+                        lblTotalLaporan.Text = "Total Laporan: " + outputParam.Value.ToString();
                     }
                 }
             }
+            catch (SqlException ex)
+            {
+                SimpanLog(ex.Message);
+                MessageBox.Show("SQL Error hitung total: " + ex.Message);
+            }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    "Gagal menghitung total: "
-                    + ex.Message);
+                SimpanLog(ex.Message);
+                MessageBox.Show("Gagal menghitung total: " + ex.Message);
             }
         }
         private void LoadData()
         {
             try
             {
-                using (SqlConnection conn =
-                    new SqlConnection(connString))
+                using (SqlConnection conn = new SqlConnection(connString))
                 {
-                    using (SqlCommand cmd =
-                        new SqlCommand("sp_GetLaporan", conn))
+                    using (SqlCommand cmd = new SqlCommand("sp_GetLaporan", conn))
                     {
-                        cmd.CommandType =
-                            CommandType.StoredProcedure;
+                        cmd.CommandType = CommandType.StoredProcedure;
 
-                        using (SqlDataAdapter da =
-                            new SqlDataAdapter(cmd))
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                         {
                             dtLaporan = new DataTable();
-
                             da.Fill(dtLaporan);
-
                             bindingSource.DataSource = dtLaporan;
-
-                            dataGridView1.DataSource =
-                                bindingSource;
-
+                            dataGridView1.DataSource = bindingSource;
                             BindControls();
                         }
                     }
                 }
 
                 HitungJumlah();
+
+                // Enable/disable button seperti pola modul
+                dataGridView1.Enabled = true;
+                btnInsert.Enabled = true;
+                btnUpdate.Enabled = true;
+                btnDelete.Enabled = true;
+            }
+            catch (SqlException ex)
+            {
+                SimpanLog(ex.Message);
+                MessageBox.Show("SQL Error: " + ex.Message);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    "Gagal load data: "
-                    + ex.Message);
+                SimpanLog(ex.Message);
+                MessageBox.Show("Gagal HitungJumlahdata: " + ex.Message);
             }
         }
         private void BindControls()
         {
             txtDeskripsi.DataBindings.Clear();
-            txtFoto.DataBindings.Clear();
             txtLokasi.DataBindings.Clear();
             cmbStatus.DataBindings.Clear();
 
-            txtDeskripsi.DataBindings.Add("Text", bindingSource, "deskripsi");
-            txtFoto.DataBindings.Add("Text", bindingSource, "foto");
-            txtLokasi.DataBindings.Add("Text", bindingSource, "lokasi_maps");
-            cmbStatus.DataBindings.Add("Text", bindingSource, "status");
+            txtDeskripsi.DataBindings.Add(
+                "Text",
+                bindingSource,
+                "deskripsi");
+
+            txtLokasi.DataBindings.Add(
+                "Text",
+                bindingSource,
+                "lokasi_maps");
+
+            cmbStatus.DataBindings.Add(
+                "Text",
+                bindingSource,
+                "status");
         }
 
         private void label4_Click(object sender, EventArgs e)
@@ -229,9 +248,15 @@ namespace SISTEM_RESIK_LAPOR
 
                 LoadData();
             }
+            catch (SqlException ex)
+            {
+                SimpanLog(ex.Message);
+                MessageBox.Show("SQL Error : " + ex.Message);
+            }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                SimpanLog(ex.Message);
+                MessageBox.Show("General Error : " + ex.Message);
             }
         }
 
@@ -242,51 +267,70 @@ namespace SISTEM_RESIK_LAPOR
 
         private void button1_Click(object sender, EventArgs e)
         {
+            string deskripsi = txtDeskripsi.Text.Trim();
+            string lokasi = txtLokasi.Text.Trim();
+
+            if (roleUser != "masyarakat")
+            {
+                MessageBox.Show("Hanya masyarakat yang boleh membuat laporan!");
+                return;
+            }
+
+            if (deskripsi == "" || lokasi == "")
+            {
+                MessageBox.Show("Deskripsi dan lokasi wajib diisi!");
+                return;
+            }
+
+            if (fotoBytes == null)
+            {
+                MessageBox.Show("Pilih foto terlebih dahulu");
+                return;
+            }
+
+            SqlConnection conn = new SqlConnection(connString);
+            conn.Open();
+            SqlTransaction trans = conn.BeginTransaction();
+
             try
             {
-                string deskripsi = txtDeskripsi.Text.Trim();
-                string lokasi = txtLokasi.Text.Trim();
-                string foto = txtFoto.Text.Trim();
+                SqlCommand cmd = new SqlCommand("sp_InsertLaporan", conn, trans);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@id_user", idUserLogin);
+                cmd.Parameters.AddWithValue("@deskripsi", deskripsi);
+                cmd.Parameters.Add("@foto", SqlDbType.VarBinary).Value = fotoBytes;
+                cmd.Parameters.AddWithValue("@lokasi_maps", lokasi);
+                cmd.ExecuteNonQuery();
 
-                if (roleUser != "masyarakat")
-                {
-                    MessageBox.Show("Hanya masyarakat yang boleh membuat laporan!");
-                    return;
-                }
+                SqlCommand cmdLog = new SqlCommand(
+                    @"INSERT INTO LogAktivitas (aktivitas, waktu)
+              VALUES (@aktivitas, GETDATE())",
+                    conn, trans);
+                cmdLog.Parameters.AddWithValue("@aktivitas", "INSERT LAPORAN : " + deskripsi);
+                cmdLog.ExecuteNonQuery();
 
-                if (deskripsi == "" || lokasi == "")
-                {
-                    MessageBox.Show("Deskripsi dan lokasi wajib diisi!");
-                    return;
-                }
-
-                using (SqlConnection conn = new SqlConnection(connString))
-                {
-                    using (SqlCommand cmd = new SqlCommand("sp_InsertLaporan", conn))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@id_user", idUserLogin);
-                        cmd.Parameters.AddWithValue("@deskripsi", deskripsi);
-                        cmd.Parameters.AddWithValue("@foto", foto);
-                        cmd.Parameters.AddWithValue("@lokasi_maps", lokasi);
-
-                        conn.Open();
-
-                        cmd.ExecuteNonQuery();
-                    }
-                }
+                trans.Commit();
 
                 MessageBox.Show("Laporan berhasil ditambahkan");
 
                 LoadData();
-
-                txtDeskripsi.Clear();
-                txtFoto.Clear();
-                txtLokasi.Clear();
+                ClearForm();
+            }
+            catch (SqlException ex)
+            {
+                trans.Rollback();
+                SimpanLog(ex.Message);
+                MessageBox.Show("SQL Error : " + ex.Message);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                trans.Rollback();
+                SimpanLog(ex.Message);
+                MessageBox.Show("General Error : " + ex.Message);
+            }
+            finally
+            {
+                conn.Close();
             }
         }
         
@@ -323,9 +367,15 @@ namespace SISTEM_RESIK_LAPOR
 
                 LoadData();
             }
+            catch (SqlException ex)
+            {
+                SimpanLog(ex.Message);
+                MessageBox.Show("SQL Error : " + ex.Message);
+            }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                SimpanLog(ex.Message);
+                MessageBox.Show("General Error : " + ex.Message);
             }
         }
 
@@ -354,9 +404,7 @@ namespace SISTEM_RESIK_LAPOR
 
         private void Form2_Load_1(object sender, EventArgs e)
         {
-            this.laporanTableAdapter.Fill(this.dBResikLaporADODataSet2.Laporan);
             
-            this.laporanTableAdapter.Fill(this.dBResikLaporADODataSet2.Laporan);
 
         }
 
@@ -483,47 +531,32 @@ namespace SISTEM_RESIK_LAPOR
             {
                 using (SqlConnection conn = new SqlConnection(connString))
                 {
+                    // Nilai deskripsi DIHARDCODE di sini, supaya tidak terganggu DataBindings txtDeskripsi
+                    string deskripsiBaru = "tes injection";
+
+                    string query =
+                        "UPDATE Laporan SET deskripsi='" +
+                        deskripsiBaru +
+                        "' WHERE id_laporan='" +
+                        txtSearch.Text + "'";
+
+                    SqlCommand cmd = new SqlCommand(query, conn);
+
                     conn.Open();
+                    cmd.ExecuteNonQuery();
 
-                    string query = "UPDATE Laporan SET deskripsi='HACKED' WHERE deskripsi='" + txtDeskripsi.Text + "'";
-
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
-                    {
-                        int result = cmd.ExecuteNonQuery();
-                        MessageBox.Show(result + " baris data berhasil dimanipulasi lewat SQL Injection!");
-                    }
+                    MessageBox.Show("Update berhasil");
                 }
-                LoadData(); 
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error Injeksi: " + ex.Message);
+                MessageBox.Show(ex.Message);
             }
         }
 
         private void txtDeskripsi_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (char.IsLetter(e.KeyChar))
-            {
-                return;
-            }
-
-            if (char.IsControl(e.KeyChar))
-            {
-                return;
-            }
-
-            if (char.IsWhiteSpace(e.KeyChar))
-            {
-                return;
-            }
-
-            if (e.KeyChar == '.' || e.KeyChar == ',' || e.KeyChar == '-')
-            {
-                return;
-            }
-
-            e.Handled = true;
+           
         }
 
         private void txtLokasi_TextChanged(object sender, EventArgs e)
@@ -564,6 +597,196 @@ namespace SISTEM_RESIK_LAPOR
                 return;
             }
             e.Handled = true;
+        }
+
+        private void SimpanLog(string pesan)
+        {
+            try
+            {
+                using (SqlConnection connLog = new SqlConnection(connString))
+                {
+                    string query = @"INSERT INTO LogError (waktu, pesan_error)
+                             VALUES (GETDATE(), @pesan)";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connLog))
+                    {
+                        cmd.Parameters.AddWithValue("@pesan", pesan);
+                        connLog.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch { /* log gagal, abaikan supaya tidak infinite loop */ }
+        }
+
+        private void button5_Click_1(object sender, EventArgs e)
+        {
+            Cetaklaporan frm = new Cetaklaporan();
+            frm.Show();
+            this.Hide();
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd =
+        new OpenFileDialog();
+
+            ofd.Filter =
+                "Image Files|*.jpg;*.jpeg;*.png;*.bmp";
+
+            if (ofd.ShowDialog() ==
+                DialogResult.OK)
+            {
+                fotoBytes =
+                    File.ReadAllBytes(
+                    ofd.FileName);
+
+                fotoLaporan.Image =
+                    Image.FromFile(
+                    ofd.FileName);
+
+                fotoLaporan.SizeMode =
+                    PictureBoxSizeMode.StretchImage;
+
+                txtFoto.Text =
+                    Path.GetFileName(
+                    ofd.FileName);
+            }
+        }
+
+        private void ClearForm()
+        {
+            txtDeskripsi.Clear();
+            txtLokasi.Clear();
+            txtFoto.Clear();
+            fotoLaporan.Image = null;
+            fotoBytes = null;
+            cmbStatus.SelectedIndex = 0;
+        }
+
+        private void button5_Click_2(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog { Filter = "Excel Workbook|*.xlsx" })
+            {
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = openFileDialog.FileName;
+
+                    using (var stream = System.IO.File.Open(filePath, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+                    {
+                        using (var reader = ExcelDataReader.ExcelReaderFactory.CreateReader(stream))
+                        {
+                            var result = reader.AsDataSet(new ExcelDataReader.ExcelDataSetConfiguration()
+                            {
+                                ConfigureDataTable = (_) => new ExcelDataReader.ExcelDataTableConfiguration()
+                                {
+                                    UseHeaderRow = true
+                                }
+                            });
+
+                            DataTable dt = result.Tables[0];
+                            dataGridView1.DataSource = dt;
+                            dataGridView1.Enabled = false;
+
+                            // Disable semua button kecuali Import DB
+                            btnImpDb.Enabled = true;
+                            btnInsert.Enabled = false;
+                            btnUpdate.Enabled = false;
+                            btnDelete.Enabled = false;
+                            btnTampil.Enabled = false;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void btnImpDb_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DataTable dt =
+                    (DataTable)dataGridView1.DataSource;
+
+                if (dt == null || dt.Rows.Count == 0)
+                {
+                    MessageBox.Show(
+                        "Tidak ada data untuk diimport.");
+
+                    return;
+                }
+
+                int sukses = 0;
+
+                using (SqlConnection conn =
+                    new SqlConnection(connString))
+                {
+                    conn.Open();
+
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        string deskripsi =
+                            row["deskripsi"]
+                            .ToString()
+                            .Trim();
+
+                        string lokasi =
+                            row["lokasi_maps"]
+                            .ToString()
+                            .Trim();
+
+                        // Skip baris kosong
+                        if (string.IsNullOrEmpty(deskripsi)
+                            || string.IsNullOrEmpty(lokasi))
+                        {
+                            continue;
+                        }
+
+                        using (SqlCommand cmd =
+                            new SqlCommand(
+                            "sp_InsertLaporan",
+                            conn))
+                        {
+                            cmd.CommandType =
+                                CommandType.StoredProcedure;
+
+                            cmd.Parameters.AddWithValue(
+                                "@id_user",
+                                idUserLogin);
+
+                            cmd.Parameters.AddWithValue(
+                                "@deskripsi",
+                                deskripsi);
+
+                            // Karena dari excel tidak ada foto
+                            cmd.Parameters.Add(
+                                "@foto",
+                                SqlDbType.VarBinary)
+                                .Value = DBNull.Value;
+
+                            cmd.Parameters.AddWithValue(
+                                "@lokasi_maps",
+                                lokasi);
+
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        sukses++;
+                    }
+                }
+
+                MessageBox.Show(
+                    "Import berhasil : "
+                    + sukses
+                    + " data");
+
+                LoadData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Gagal import : "
+                    + ex.Message);
+            }
         }
     }
 }

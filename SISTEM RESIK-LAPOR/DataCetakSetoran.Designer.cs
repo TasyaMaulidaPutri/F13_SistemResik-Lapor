@@ -20,17 +20,17 @@ namespace SISTEM_RESIK_LAPOR {
     [global::System.ComponentModel.DesignerCategoryAttribute("code")]
     [global::System.ComponentModel.ToolboxItem(true)]
     [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedDataSetSchema")]
-    [global::System.Xml.Serialization.XmlRootAttribute("DBResikLaporADODataSet2")]
+    [global::System.Xml.Serialization.XmlRootAttribute("DataCetakSetoran")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
-    public partial class DBResikLaporADODataSet2 : global::System.Data.DataSet {
+    public partial class DataCetakSetoran : global::System.Data.DataSet {
         
-        private LaporanDataTable tableLaporan;
+        private DataTable1DataTable tableDataTable1;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        public DBResikLaporADODataSet2() {
+        public DataCetakSetoran() {
             this.BeginInit();
             this.InitClass();
             global::System.ComponentModel.CollectionChangeEventHandler schemaChangedHandler = new global::System.ComponentModel.CollectionChangeEventHandler(this.SchemaChanged);
@@ -41,7 +41,7 @@ namespace SISTEM_RESIK_LAPOR {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        protected DBResikLaporADODataSet2(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+        protected DataCetakSetoran(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                 base(info, context, false) {
             if ((this.IsBinarySerialized(info, context) == true)) {
                 this.InitVars(false);
@@ -54,8 +54,8 @@ namespace SISTEM_RESIK_LAPOR {
             if ((this.DetermineSchemaSerializationMode(info, context) == global::System.Data.SchemaSerializationMode.IncludeSchema)) {
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXmlSchema(new global::System.Xml.XmlTextReader(new global::System.IO.StringReader(strSchema)));
-                if ((ds.Tables["Laporan"] != null)) {
-                    base.Tables.Add(new LaporanDataTable(ds.Tables["Laporan"]));
+                if ((ds.Tables["DataTable1"] != null)) {
+                    base.Tables.Add(new DataTable1DataTable(ds.Tables["DataTable1"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -79,9 +79,9 @@ namespace SISTEM_RESIK_LAPOR {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public LaporanDataTable Laporan {
+        public DataTable1DataTable DataTable1 {
             get {
-                return this.tableLaporan;
+                return this.tableDataTable1;
             }
         }
         
@@ -127,7 +127,7 @@ namespace SISTEM_RESIK_LAPOR {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         public override global::System.Data.DataSet Clone() {
-            DBResikLaporADODataSet2 cln = ((DBResikLaporADODataSet2)(base.Clone()));
+            DataCetakSetoran cln = ((DataCetakSetoran)(base.Clone()));
             cln.InitVars();
             cln.SchemaSerializationMode = this.SchemaSerializationMode;
             return cln;
@@ -152,8 +152,8 @@ namespace SISTEM_RESIK_LAPOR {
                 this.Reset();
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXml(reader);
-                if ((ds.Tables["Laporan"] != null)) {
-                    base.Tables.Add(new LaporanDataTable(ds.Tables["Laporan"]));
+                if ((ds.Tables["DataTable1"] != null)) {
+                    base.Tables.Add(new DataTable1DataTable(ds.Tables["DataTable1"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -188,10 +188,10 @@ namespace SISTEM_RESIK_LAPOR {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         internal void InitVars(bool initTable) {
-            this.tableLaporan = ((LaporanDataTable)(base.Tables["Laporan"]));
+            this.tableDataTable1 = ((DataTable1DataTable)(base.Tables["DataTable1"]));
             if ((initTable == true)) {
-                if ((this.tableLaporan != null)) {
-                    this.tableLaporan.InitVars();
+                if ((this.tableDataTable1 != null)) {
+                    this.tableDataTable1.InitVars();
                 }
             }
         }
@@ -199,18 +199,18 @@ namespace SISTEM_RESIK_LAPOR {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         private void InitClass() {
-            this.DataSetName = "DBResikLaporADODataSet2";
+            this.DataSetName = "DataCetakSetoran";
             this.Prefix = "";
-            this.Namespace = "http://tempuri.org/DBResikLaporADODataSet2.xsd";
+            this.Namespace = "http://tempuri.org/DataCetakSetoran.xsd";
             this.EnforceConstraints = true;
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
-            this.tableLaporan = new LaporanDataTable();
-            base.Tables.Add(this.tableLaporan);
+            this.tableDataTable1 = new DataTable1DataTable();
+            base.Tables.Add(this.tableDataTable1);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        private bool ShouldSerializeLaporan() {
+        private bool ShouldSerializeDataTable1() {
             return false;
         }
         
@@ -225,7 +225,7 @@ namespace SISTEM_RESIK_LAPOR {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedDataSetSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
-            DBResikLaporADODataSet2 ds = new DBResikLaporADODataSet2();
+            DataCetakSetoran ds = new DataCetakSetoran();
             global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
             global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
             global::System.Xml.Schema.XmlSchemaAny any = new global::System.Xml.Schema.XmlSchemaAny();
@@ -270,31 +270,33 @@ namespace SISTEM_RESIK_LAPOR {
         }
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        public delegate void LaporanRowChangeEventHandler(object sender, LaporanRowChangeEvent e);
+        public delegate void DataTable1RowChangeEventHandler(object sender, DataTable1RowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class LaporanDataTable : global::System.Data.TypedTableBase<LaporanRow> {
+        public partial class DataTable1DataTable : global::System.Data.TypedTableBase<DataTable1Row> {
             
-            private global::System.Data.DataColumn columnlokasi_maps;
+            private global::System.Data.DataColumn columnid_setoran;
             
-            private global::System.Data.DataColumn columnstatus;
+            private global::System.Data.DataColumn columnNama;
             
-            private global::System.Data.DataColumn columnid_laporan;
+            private global::System.Data.DataColumn columnnama_jenis_sampah;
             
-            private global::System.Data.DataColumn columndeskripsi;
+            private global::System.Data.DataColumn columnberat_kg;
             
-            private global::System.Data.DataColumn columnid_user;
+            private global::System.Data.DataColumn columnpoin_per_kg;
             
-            private global::System.Data.DataColumn columnfoto;
+            private global::System.Data.DataColumn columnstatus_verifikasi;
+            
+            private global::System.Data.DataColumn columntanggal_setor;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public LaporanDataTable() {
-                this.TableName = "Laporan";
+            public DataTable1DataTable() {
+                this.TableName = "DataTable1";
                 this.BeginInit();
                 this.InitClass();
                 this.EndInit();
@@ -302,7 +304,7 @@ namespace SISTEM_RESIK_LAPOR {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            internal LaporanDataTable(global::System.Data.DataTable table) {
+            internal DataTable1DataTable(global::System.Data.DataTable table) {
                 this.TableName = table.TableName;
                 if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
                     this.CaseSensitive = table.CaseSensitive;
@@ -319,56 +321,64 @@ namespace SISTEM_RESIK_LAPOR {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            protected LaporanDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+            protected DataTable1DataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn lokasi_mapsColumn {
+            public global::System.Data.DataColumn id_setoranColumn {
                 get {
-                    return this.columnlokasi_maps;
+                    return this.columnid_setoran;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn statusColumn {
+            public global::System.Data.DataColumn NamaColumn {
                 get {
-                    return this.columnstatus;
+                    return this.columnNama;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn id_laporanColumn {
+            public global::System.Data.DataColumn nama_jenis_sampahColumn {
                 get {
-                    return this.columnid_laporan;
+                    return this.columnnama_jenis_sampah;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn deskripsiColumn {
+            public global::System.Data.DataColumn berat_kgColumn {
                 get {
-                    return this.columndeskripsi;
+                    return this.columnberat_kg;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn id_userColumn {
+            public global::System.Data.DataColumn poin_per_kgColumn {
                 get {
-                    return this.columnid_user;
+                    return this.columnpoin_per_kg;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn fotoColumn {
+            public global::System.Data.DataColumn status_verifikasiColumn {
                 get {
-                    return this.columnfoto;
+                    return this.columnstatus_verifikasi;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn tanggal_setorColumn {
+                get {
+                    return this.columntanggal_setor;
                 }
             }
             
@@ -383,57 +393,58 @@ namespace SISTEM_RESIK_LAPOR {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public LaporanRow this[int index] {
+            public DataTable1Row this[int index] {
                 get {
-                    return ((LaporanRow)(this.Rows[index]));
+                    return ((DataTable1Row)(this.Rows[index]));
                 }
             }
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public event LaporanRowChangeEventHandler LaporanRowChanging;
+            public event DataTable1RowChangeEventHandler DataTable1RowChanging;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public event LaporanRowChangeEventHandler LaporanRowChanged;
+            public event DataTable1RowChangeEventHandler DataTable1RowChanged;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public event LaporanRowChangeEventHandler LaporanRowDeleting;
+            public event DataTable1RowChangeEventHandler DataTable1RowDeleting;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public event LaporanRowChangeEventHandler LaporanRowDeleted;
+            public event DataTable1RowChangeEventHandler DataTable1RowDeleted;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void AddLaporanRow(LaporanRow row) {
+            public void AddDataTable1Row(DataTable1Row row) {
                 this.Rows.Add(row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public LaporanRow AddLaporanRow(string lokasi_maps, string status, string deskripsi, int id_user, string foto) {
-                LaporanRow rowLaporanRow = ((LaporanRow)(this.NewRow()));
+            public DataTable1Row AddDataTable1Row(string Nama, string nama_jenis_sampah, double berat_kg, int poin_per_kg, string status_verifikasi, System.DateTime tanggal_setor) {
+                DataTable1Row rowDataTable1Row = ((DataTable1Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        lokasi_maps,
-                        status,
                         null,
-                        deskripsi,
-                        id_user,
-                        foto};
-                rowLaporanRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowLaporanRow);
-                return rowLaporanRow;
+                        Nama,
+                        nama_jenis_sampah,
+                        berat_kg,
+                        poin_per_kg,
+                        status_verifikasi,
+                        tanggal_setor};
+                rowDataTable1Row.ItemArray = columnValuesArray;
+                this.Rows.Add(rowDataTable1Row);
+                return rowDataTable1Row;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public LaporanRow FindByid_laporan(int id_laporan) {
-                return ((LaporanRow)(this.Rows.Find(new object[] {
-                            id_laporan})));
+            public DataTable1Row FindByid_setoran(int id_setoran) {
+                return ((DataTable1Row)(this.Rows.Find(new object[] {
+                            id_setoran})));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public override global::System.Data.DataTable Clone() {
-                LaporanDataTable cln = ((LaporanDataTable)(base.Clone()));
+                DataTable1DataTable cln = ((DataTable1DataTable)(base.Clone()));
                 cln.InitVars();
                 return cln;
             }
@@ -441,74 +452,76 @@ namespace SISTEM_RESIK_LAPOR {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override global::System.Data.DataTable CreateInstance() {
-                return new LaporanDataTable();
+                return new DataTable1DataTable();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             internal void InitVars() {
-                this.columnlokasi_maps = base.Columns["lokasi_maps"];
-                this.columnstatus = base.Columns["status"];
-                this.columnid_laporan = base.Columns["id_laporan"];
-                this.columndeskripsi = base.Columns["deskripsi"];
-                this.columnid_user = base.Columns["id_user"];
-                this.columnfoto = base.Columns["foto"];
+                this.columnid_setoran = base.Columns["id_setoran"];
+                this.columnNama = base.Columns["Nama"];
+                this.columnnama_jenis_sampah = base.Columns["nama_jenis_sampah"];
+                this.columnberat_kg = base.Columns["berat_kg"];
+                this.columnpoin_per_kg = base.Columns["poin_per_kg"];
+                this.columnstatus_verifikasi = base.Columns["status_verifikasi"];
+                this.columntanggal_setor = base.Columns["tanggal_setor"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             private void InitClass() {
-                this.columnlokasi_maps = new global::System.Data.DataColumn("lokasi_maps", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnlokasi_maps);
-                this.columnstatus = new global::System.Data.DataColumn("status", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnstatus);
-                this.columnid_laporan = new global::System.Data.DataColumn("id_laporan", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnid_laporan);
-                this.columndeskripsi = new global::System.Data.DataColumn("deskripsi", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columndeskripsi);
-                this.columnid_user = new global::System.Data.DataColumn("id_user", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnid_user);
-                this.columnfoto = new global::System.Data.DataColumn("foto", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnfoto);
+                this.columnid_setoran = new global::System.Data.DataColumn("id_setoran", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnid_setoran);
+                this.columnNama = new global::System.Data.DataColumn("Nama", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnNama);
+                this.columnnama_jenis_sampah = new global::System.Data.DataColumn("nama_jenis_sampah", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnnama_jenis_sampah);
+                this.columnberat_kg = new global::System.Data.DataColumn("berat_kg", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnberat_kg);
+                this.columnpoin_per_kg = new global::System.Data.DataColumn("poin_per_kg", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnpoin_per_kg);
+                this.columnstatus_verifikasi = new global::System.Data.DataColumn("status_verifikasi", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnstatus_verifikasi);
+                this.columntanggal_setor = new global::System.Data.DataColumn("tanggal_setor", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columntanggal_setor);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
-                                this.columnid_laporan}, true));
-                this.columnlokasi_maps.MaxLength = 255;
-                this.columnstatus.MaxLength = 20;
-                this.columnid_laporan.AutoIncrement = true;
-                this.columnid_laporan.AutoIncrementSeed = -1;
-                this.columnid_laporan.AutoIncrementStep = -1;
-                this.columnid_laporan.AllowDBNull = false;
-                this.columnid_laporan.ReadOnly = true;
-                this.columnid_laporan.Unique = true;
-                this.columndeskripsi.MaxLength = 255;
-                this.columnid_user.AllowDBNull = false;
-                this.columnfoto.MaxLength = 255;
+                                this.columnid_setoran}, true));
+                this.columnid_setoran.AutoIncrement = true;
+                this.columnid_setoran.AutoIncrementSeed = -1;
+                this.columnid_setoran.AutoIncrementStep = -1;
+                this.columnid_setoran.AllowDBNull = false;
+                this.columnid_setoran.ReadOnly = true;
+                this.columnid_setoran.Unique = true;
+                this.columnNama.AllowDBNull = false;
+                this.columnNama.MaxLength = 100;
+                this.columnnama_jenis_sampah.MaxLength = 100;
+                this.columnstatus_verifikasi.MaxLength = 20;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public LaporanRow NewLaporanRow() {
-                return ((LaporanRow)(this.NewRow()));
+            public DataTable1Row NewDataTable1Row() {
+                return ((DataTable1Row)(this.NewRow()));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new LaporanRow(builder);
+                return new DataTable1Row(builder);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override global::System.Type GetRowType() {
-                return typeof(LaporanRow);
+                return typeof(DataTable1Row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanged(e);
-                if ((this.LaporanRowChanged != null)) {
-                    this.LaporanRowChanged(this, new LaporanRowChangeEvent(((LaporanRow)(e.Row)), e.Action));
+                if ((this.DataTable1RowChanged != null)) {
+                    this.DataTable1RowChanged(this, new DataTable1RowChangeEvent(((DataTable1Row)(e.Row)), e.Action));
                 }
             }
             
@@ -516,8 +529,8 @@ namespace SISTEM_RESIK_LAPOR {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanging(e);
-                if ((this.LaporanRowChanging != null)) {
-                    this.LaporanRowChanging(this, new LaporanRowChangeEvent(((LaporanRow)(e.Row)), e.Action));
+                if ((this.DataTable1RowChanging != null)) {
+                    this.DataTable1RowChanging(this, new DataTable1RowChangeEvent(((DataTable1Row)(e.Row)), e.Action));
                 }
             }
             
@@ -525,8 +538,8 @@ namespace SISTEM_RESIK_LAPOR {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleted(e);
-                if ((this.LaporanRowDeleted != null)) {
-                    this.LaporanRowDeleted(this, new LaporanRowChangeEvent(((LaporanRow)(e.Row)), e.Action));
+                if ((this.DataTable1RowDeleted != null)) {
+                    this.DataTable1RowDeleted(this, new DataTable1RowChangeEvent(((DataTable1Row)(e.Row)), e.Action));
                 }
             }
             
@@ -534,14 +547,14 @@ namespace SISTEM_RESIK_LAPOR {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleting(e);
-                if ((this.LaporanRowDeleting != null)) {
-                    this.LaporanRowDeleting(this, new LaporanRowChangeEvent(((LaporanRow)(e.Row)), e.Action));
+                if ((this.DataTable1RowDeleting != null)) {
+                    this.DataTable1RowDeleting(this, new DataTable1RowChangeEvent(((DataTable1Row)(e.Row)), e.Action));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void RemoveLaporanRow(LaporanRow row) {
+            public void RemoveDataTable1Row(DataTable1Row row) {
                 this.Rows.Remove(row);
             }
             
@@ -550,7 +563,7 @@ namespace SISTEM_RESIK_LAPOR {
             public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
                 global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
                 global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
-                DBResikLaporADODataSet2 ds = new DBResikLaporADODataSet2();
+                DataCetakSetoran ds = new DataCetakSetoran();
                 global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
                 any1.Namespace = "http://www.w3.org/2001/XMLSchema";
                 any1.MinOccurs = new decimal(0);
@@ -568,7 +581,7 @@ namespace SISTEM_RESIK_LAPOR {
                 type.Attributes.Add(attribute1);
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "LaporanDataTable";
+                attribute2.FixedValue = "DataTable1DataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -612,149 +625,177 @@ namespace SISTEM_RESIK_LAPOR {
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class LaporanRow : global::System.Data.DataRow {
+        public partial class DataTable1Row : global::System.Data.DataRow {
             
-            private LaporanDataTable tableLaporan;
+            private DataTable1DataTable tableDataTable1;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            internal LaporanRow(global::System.Data.DataRowBuilder rb) : 
+            internal DataTable1Row(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
-                this.tableLaporan = ((LaporanDataTable)(this.Table));
+                this.tableDataTable1 = ((DataTable1DataTable)(this.Table));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string lokasi_maps {
+            public int id_setoran {
+                get {
+                    return ((int)(this[this.tableDataTable1.id_setoranColumn]));
+                }
+                set {
+                    this[this.tableDataTable1.id_setoranColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string Nama {
+                get {
+                    return ((string)(this[this.tableDataTable1.NamaColumn]));
+                }
+                set {
+                    this[this.tableDataTable1.NamaColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string nama_jenis_sampah {
                 get {
                     try {
-                        return ((string)(this[this.tableLaporan.lokasi_mapsColumn]));
+                        return ((string)(this[this.tableDataTable1.nama_jenis_sampahColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'lokasi_maps\' in table \'Laporan\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'nama_jenis_sampah\' in table \'DataTable1\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableLaporan.lokasi_mapsColumn] = value;
+                    this[this.tableDataTable1.nama_jenis_sampahColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string status {
+            public double berat_kg {
                 get {
                     try {
-                        return ((string)(this[this.tableLaporan.statusColumn]));
+                        return ((double)(this[this.tableDataTable1.berat_kgColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'status\' in table \'Laporan\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'berat_kg\' in table \'DataTable1\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableLaporan.statusColumn] = value;
+                    this[this.tableDataTable1.berat_kgColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public int id_laporan {
-                get {
-                    return ((int)(this[this.tableLaporan.id_laporanColumn]));
-                }
-                set {
-                    this[this.tableLaporan.id_laporanColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string deskripsi {
+            public int poin_per_kg {
                 get {
                     try {
-                        return ((string)(this[this.tableLaporan.deskripsiColumn]));
+                        return ((int)(this[this.tableDataTable1.poin_per_kgColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'deskripsi\' in table \'Laporan\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'poin_per_kg\' in table \'DataTable1\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableLaporan.deskripsiColumn] = value;
+                    this[this.tableDataTable1.poin_per_kgColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public int id_user {
-                get {
-                    return ((int)(this[this.tableLaporan.id_userColumn]));
-                }
-                set {
-                    this[this.tableLaporan.id_userColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string foto {
+            public string status_verifikasi {
                 get {
                     try {
-                        return ((string)(this[this.tableLaporan.fotoColumn]));
+                        return ((string)(this[this.tableDataTable1.status_verifikasiColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'foto\' in table \'Laporan\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'status_verifikasi\' in table \'DataTable1\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableLaporan.fotoColumn] = value;
+                    this[this.tableDataTable1.status_verifikasiColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool Islokasi_mapsNull() {
-                return this.IsNull(this.tableLaporan.lokasi_mapsColumn);
+            public System.DateTime tanggal_setor {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableDataTable1.tanggal_setorColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'tanggal_setor\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.tanggal_setorColumn] = value;
+                }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void Setlokasi_mapsNull() {
-                this[this.tableLaporan.lokasi_mapsColumn] = global::System.Convert.DBNull;
+            public bool Isnama_jenis_sampahNull() {
+                return this.IsNull(this.tableDataTable1.nama_jenis_sampahColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsstatusNull() {
-                return this.IsNull(this.tableLaporan.statusColumn);
+            public void Setnama_jenis_sampahNull() {
+                this[this.tableDataTable1.nama_jenis_sampahColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetstatusNull() {
-                this[this.tableLaporan.statusColumn] = global::System.Convert.DBNull;
+            public bool Isberat_kgNull() {
+                return this.IsNull(this.tableDataTable1.berat_kgColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsdeskripsiNull() {
-                return this.IsNull(this.tableLaporan.deskripsiColumn);
+            public void Setberat_kgNull() {
+                this[this.tableDataTable1.berat_kgColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetdeskripsiNull() {
-                this[this.tableLaporan.deskripsiColumn] = global::System.Convert.DBNull;
+            public bool Ispoin_per_kgNull() {
+                return this.IsNull(this.tableDataTable1.poin_per_kgColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsfotoNull() {
-                return this.IsNull(this.tableLaporan.fotoColumn);
+            public void Setpoin_per_kgNull() {
+                this[this.tableDataTable1.poin_per_kgColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetfotoNull() {
-                this[this.tableLaporan.fotoColumn] = global::System.Convert.DBNull;
+            public bool Isstatus_verifikasiNull() {
+                return this.IsNull(this.tableDataTable1.status_verifikasiColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void Setstatus_verifikasiNull() {
+                this[this.tableDataTable1.status_verifikasiColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool Istanggal_setorNull() {
+                return this.IsNull(this.tableDataTable1.tanggal_setorColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void Settanggal_setorNull() {
+                this[this.tableDataTable1.tanggal_setorColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -762,22 +803,22 @@ namespace SISTEM_RESIK_LAPOR {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        public class LaporanRowChangeEvent : global::System.EventArgs {
+        public class DataTable1RowChangeEvent : global::System.EventArgs {
             
-            private LaporanRow eventRow;
+            private DataTable1Row eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public LaporanRowChangeEvent(LaporanRow row, global::System.Data.DataRowAction action) {
+            public DataTable1RowChangeEvent(DataTable1Row row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public LaporanRow Row {
+            public DataTable1Row Row {
                 get {
                     return this.eventRow;
                 }
@@ -793,7 +834,7 @@ namespace SISTEM_RESIK_LAPOR {
         }
     }
 }
-namespace SISTEM_RESIK_LAPOR.DBResikLaporADODataSet2TableAdapters {
+namespace SISTEM_RESIK_LAPOR.DataCetakSetoranTableAdapters {
     
     
     /// <summary>
@@ -805,7 +846,7 @@ namespace SISTEM_RESIK_LAPOR.DBResikLaporADODataSet2TableAdapters {
     [global::System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner" +
         ", Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-    public partial class LaporanTableAdapter : global::System.ComponentModel.Component {
+    public partial class DataTable1TableAdapter : global::System.ComponentModel.Component {
         
         private global::System.Data.SqlClient.SqlDataAdapter _adapter;
         
@@ -819,7 +860,7 @@ namespace SISTEM_RESIK_LAPOR.DBResikLaporADODataSet2TableAdapters {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        public LaporanTableAdapter() {
+        public DataTable1TableAdapter() {
             this.ClearBeforeFill = true;
         }
         
@@ -916,13 +957,14 @@ namespace SISTEM_RESIK_LAPOR.DBResikLaporADODataSet2TableAdapters {
             this._adapter = new global::System.Data.SqlClient.SqlDataAdapter();
             global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
             tableMapping.SourceTable = "Table";
-            tableMapping.DataSetTable = "Laporan";
-            tableMapping.ColumnMappings.Add("lokasi_maps", "lokasi_maps");
-            tableMapping.ColumnMappings.Add("status", "status");
-            tableMapping.ColumnMappings.Add("id_laporan", "id_laporan");
-            tableMapping.ColumnMappings.Add("deskripsi", "deskripsi");
-            tableMapping.ColumnMappings.Add("id_user", "id_user");
-            tableMapping.ColumnMappings.Add("foto", "foto");
+            tableMapping.DataSetTable = "DataTable1";
+            tableMapping.ColumnMappings.Add("id_setoran", "id_setoran");
+            tableMapping.ColumnMappings.Add("Nama", "Nama");
+            tableMapping.ColumnMappings.Add("nama_jenis_sampah", "nama_jenis_sampah");
+            tableMapping.ColumnMappings.Add("berat_kg", "berat_kg");
+            tableMapping.ColumnMappings.Add("poin_per_kg", "poin_per_kg");
+            tableMapping.ColumnMappings.Add("status_verifikasi", "status_verifikasi");
+            tableMapping.ColumnMappings.Add("tanggal_setor", "tanggal_setor");
             this._adapter.TableMappings.Add(tableMapping);
         }
         
@@ -939,7 +981,9 @@ namespace SISTEM_RESIK_LAPOR.DBResikLaporADODataSet2TableAdapters {
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT id_laporan, id_user, deskripsi, foto, lokasi_maps, status FROM Laporan";
+            this._commandCollection[0].CommandText = "SELECT \r\n    s.id_setoran,\r\n    u.nama AS Nama,\r\n    s.nama_jenis_sampah,\r\n    s." +
+                "berat_kg,\r\n    s.poin_per_kg,\r\n    s.status_verifikasi,\r\n    s.tanggal_setor\r\nFR" +
+                "OM Setoran s\r\nJOIN Users u ON s.id_user = u.id_user";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         
@@ -947,7 +991,7 @@ namespace SISTEM_RESIK_LAPOR.DBResikLaporADODataSet2TableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, true)]
-        public virtual int Fill(DBResikLaporADODataSet2.LaporanDataTable dataTable) {
+        public virtual int Fill(DataCetakSetoran.DataTable1DataTable dataTable) {
             this.Adapter.SelectCommand = this.CommandCollection[0];
             if ((this.ClearBeforeFill == true)) {
                 dataTable.Clear();
@@ -960,9 +1004,9 @@ namespace SISTEM_RESIK_LAPOR.DBResikLaporADODataSet2TableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
-        public virtual DBResikLaporADODataSet2.LaporanDataTable GetData() {
+        public virtual DataCetakSetoran.DataTable1DataTable GetData() {
             this.Adapter.SelectCommand = this.CommandCollection[0];
-            DBResikLaporADODataSet2.LaporanDataTable dataTable = new DBResikLaporADODataSet2.LaporanDataTable();
+            DataCetakSetoran.DataTable1DataTable dataTable = new DataCetakSetoran.DataTable1DataTable();
             this.Adapter.Fill(dataTable);
             return dataTable;
         }
@@ -1036,7 +1080,7 @@ namespace SISTEM_RESIK_LAPOR.DBResikLaporADODataSet2TableAdapters {
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        private int UpdateUpdatedRows(DBResikLaporADODataSet2 dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
+        private int UpdateUpdatedRows(DataCetakSetoran dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
             return result;
         }
@@ -1046,7 +1090,7 @@ namespace SISTEM_RESIK_LAPOR.DBResikLaporADODataSet2TableAdapters {
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        private int UpdateInsertedRows(DBResikLaporADODataSet2 dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
+        private int UpdateInsertedRows(DataCetakSetoran dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
             return result;
         }
@@ -1056,7 +1100,7 @@ namespace SISTEM_RESIK_LAPOR.DBResikLaporADODataSet2TableAdapters {
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        private int UpdateDeletedRows(DBResikLaporADODataSet2 dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows) {
+        private int UpdateDeletedRows(DataCetakSetoran dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows) {
             int result = 0;
             return result;
         }
@@ -1090,7 +1134,7 @@ namespace SISTEM_RESIK_LAPOR.DBResikLaporADODataSet2TableAdapters {
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        public virtual int UpdateAll(DBResikLaporADODataSet2 dataSet) {
+        public virtual int UpdateAll(DataCetakSetoran dataSet) {
             if ((dataSet == null)) {
                 throw new global::System.ArgumentNullException("dataSet");
             }

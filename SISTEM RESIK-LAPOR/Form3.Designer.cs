@@ -68,6 +68,7 @@
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.lblTotalPoinKeseluruhan = new System.Windows.Forms.Label();
+            this.btnRekapData = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.setoranBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dBResikLaporADODataSet3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -82,6 +83,7 @@
             this.txtJenis.Name = "txtJenis";
             this.txtJenis.Size = new System.Drawing.Size(100, 26);
             this.txtJenis.TabIndex = 2;
+            this.txtJenis.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtJenis_KeyPress);
             // 
             // setoranBindingSource
             // 
@@ -330,7 +332,7 @@
             // bindingNavigatorCountItem
             // 
             this.bindingNavigatorCountItem.Name = "bindingNavigatorCountItem";
-            this.bindingNavigatorCountItem.Size = new System.Drawing.Size(54, 33);
+            this.bindingNavigatorCountItem.Size = new System.Drawing.Size(54, 28);
             this.bindingNavigatorCountItem.Text = "of {0}";
             this.bindingNavigatorCountItem.ToolTipText = "Total number of items";
             // 
@@ -340,7 +342,7 @@
             this.bindingNavigatorDeleteItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorDeleteItem.Image")));
             this.bindingNavigatorDeleteItem.Name = "bindingNavigatorDeleteItem";
             this.bindingNavigatorDeleteItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorDeleteItem.Size = new System.Drawing.Size(34, 33);
+            this.bindingNavigatorDeleteItem.Size = new System.Drawing.Size(34, 28);
             this.bindingNavigatorDeleteItem.Text = "Delete";
             // 
             // bindingNavigatorMoveFirstItem
@@ -349,7 +351,7 @@
             this.bindingNavigatorMoveFirstItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMoveFirstItem.Image")));
             this.bindingNavigatorMoveFirstItem.Name = "bindingNavigatorMoveFirstItem";
             this.bindingNavigatorMoveFirstItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorMoveFirstItem.Size = new System.Drawing.Size(34, 33);
+            this.bindingNavigatorMoveFirstItem.Size = new System.Drawing.Size(34, 28);
             this.bindingNavigatorMoveFirstItem.Text = "Move first";
             // 
             // bindingNavigatorMovePreviousItem
@@ -358,13 +360,13 @@
             this.bindingNavigatorMovePreviousItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMovePreviousItem.Image")));
             this.bindingNavigatorMovePreviousItem.Name = "bindingNavigatorMovePreviousItem";
             this.bindingNavigatorMovePreviousItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorMovePreviousItem.Size = new System.Drawing.Size(34, 33);
+            this.bindingNavigatorMovePreviousItem.Size = new System.Drawing.Size(34, 28);
             this.bindingNavigatorMovePreviousItem.Text = "Move previous";
             // 
             // bindingNavigatorSeparator
             // 
             this.bindingNavigatorSeparator.Name = "bindingNavigatorSeparator";
-            this.bindingNavigatorSeparator.Size = new System.Drawing.Size(6, 38);
+            this.bindingNavigatorSeparator.Size = new System.Drawing.Size(6, 33);
             // 
             // bindingNavigatorPositionItem
             // 
@@ -379,7 +381,7 @@
             // bindingNavigatorSeparator1
             // 
             this.bindingNavigatorSeparator1.Name = "bindingNavigatorSeparator1";
-            this.bindingNavigatorSeparator1.Size = new System.Drawing.Size(6, 38);
+            this.bindingNavigatorSeparator1.Size = new System.Drawing.Size(6, 33);
             // 
             // bindingNavigatorMoveNextItem
             // 
@@ -387,7 +389,7 @@
             this.bindingNavigatorMoveNextItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMoveNextItem.Image")));
             this.bindingNavigatorMoveNextItem.Name = "bindingNavigatorMoveNextItem";
             this.bindingNavigatorMoveNextItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorMoveNextItem.Size = new System.Drawing.Size(34, 33);
+            this.bindingNavigatorMoveNextItem.Size = new System.Drawing.Size(34, 28);
             this.bindingNavigatorMoveNextItem.Text = "Move next";
             // 
             // bindingNavigatorMoveLastItem
@@ -396,13 +398,13 @@
             this.bindingNavigatorMoveLastItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMoveLastItem.Image")));
             this.bindingNavigatorMoveLastItem.Name = "bindingNavigatorMoveLastItem";
             this.bindingNavigatorMoveLastItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorMoveLastItem.Size = new System.Drawing.Size(34, 33);
+            this.bindingNavigatorMoveLastItem.Size = new System.Drawing.Size(34, 28);
             this.bindingNavigatorMoveLastItem.Text = "Move last";
             // 
             // bindingNavigatorSeparator2
             // 
             this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator2";
-            this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(6, 38);
+            this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(6, 33);
             // 
             // setoranTableAdapter
             // 
@@ -438,11 +440,22 @@
             this.lblTotalPoinKeseluruhan.TabIndex = 30;
             this.lblTotalPoinKeseluruhan.Text = "Total Poin: 0";
             // 
+            // btnRekapData
+            // 
+            this.btnRekapData.Location = new System.Drawing.Point(1011, 160);
+            this.btnRekapData.Name = "btnRekapData";
+            this.btnRekapData.Size = new System.Drawing.Size(108, 46);
+            this.btnRekapData.TabIndex = 31;
+            this.btnRekapData.Text = "Rekap Data";
+            this.btnRekapData.UseVisualStyleBackColor = true;
+            this.btnRekapData.Click += new System.EventHandler(this.button2_Click);
+            // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1186, 656);
+            this.Controls.Add(this.btnRekapData);
             this.Controls.Add(this.lblTotalPoinKeseluruhan);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.txtSearch);
@@ -520,5 +533,6 @@
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label lblTotalPoinKeseluruhan;
+        private System.Windows.Forms.Button btnRekapData;
     }
 }

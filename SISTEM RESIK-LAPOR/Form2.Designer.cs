@@ -69,11 +69,17 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
+            this.btnRekapData = new System.Windows.Forms.Button();
+            this.fotoLaporan = new System.Windows.Forms.PictureBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.btnImpDb = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.laporanBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dBResikLaporADODataSet2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator1)).BeginInit();
             this.bindingNavigator1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.fotoLaporan)).BeginInit();
             this.SuspendLayout();
             // 
             // txtDeskripsi
@@ -320,7 +326,7 @@
             this.bindingNavigator1.MovePreviousItem = this.bindingNavigatorMovePreviousItem;
             this.bindingNavigator1.Name = "bindingNavigator1";
             this.bindingNavigator1.PositionItem = this.bindingNavigatorPositionItem;
-            this.bindingNavigator1.Size = new System.Drawing.Size(1146, 38);
+            this.bindingNavigator1.Size = new System.Drawing.Size(1146, 33);
             this.bindingNavigator1.TabIndex = 29;
             this.bindingNavigator1.Text = "bindingNavigator1";
             // 
@@ -330,7 +336,7 @@
             this.bindingNavigatorAddNewItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorAddNewItem.Image")));
             this.bindingNavigatorAddNewItem.Name = "bindingNavigatorAddNewItem";
             this.bindingNavigatorAddNewItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorAddNewItem.Size = new System.Drawing.Size(34, 33);
+            this.bindingNavigatorAddNewItem.Size = new System.Drawing.Size(34, 28);
             this.bindingNavigatorAddNewItem.Text = "Add new";
             // 
             // bindingNavigatorCountItem
@@ -435,7 +441,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(805, 137);
+            this.button3.Location = new System.Drawing.Point(971, 137);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(109, 37);
             this.button3.TabIndex = 32;
@@ -445,7 +451,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(805, 180);
+            this.button4.Location = new System.Drawing.Point(971, 180);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(109, 32);
             this.button4.TabIndex = 33;
@@ -453,11 +459,64 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click_1);
             // 
+            // btnRekapData
+            // 
+            this.btnRekapData.Location = new System.Drawing.Point(971, 220);
+            this.btnRekapData.Name = "btnRekapData";
+            this.btnRekapData.Size = new System.Drawing.Size(109, 33);
+            this.btnRekapData.TabIndex = 35;
+            this.btnRekapData.Text = "Rekap Data";
+            this.btnRekapData.UseVisualStyleBackColor = true;
+            this.btnRekapData.Click += new System.EventHandler(this.button5_Click_1);
+            // 
+            // fotoLaporan
+            // 
+            this.fotoLaporan.Location = new System.Drawing.Point(693, 138);
+            this.fotoLaporan.Name = "fotoLaporan";
+            this.fotoLaporan.Size = new System.Drawing.Size(143, 77);
+            this.fotoLaporan.TabIndex = 36;
+            this.fotoLaporan.TabStop = false;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(713, 224);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(106, 54);
+            this.button1.TabIndex = 37;
+            this.button1.Text = "Upload Gambar";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(971, 259);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(106, 54);
+            this.button5.TabIndex = 38;
+            this.button5.Text = "Import From Excel";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click_2);
+            // 
+            // btnImpDb
+            // 
+            this.btnImpDb.Location = new System.Drawing.Point(971, 319);
+            this.btnImpDb.Name = "btnImpDb";
+            this.btnImpDb.Size = new System.Drawing.Size(106, 54);
+            this.btnImpDb.TabIndex = 39;
+            this.btnImpDb.Text = "Import To Database";
+            this.btnImpDb.UseVisualStyleBackColor = true;
+            this.btnImpDb.Click += new System.EventHandler(this.btnImpDb_Click);
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1146, 647);
+            this.Controls.Add(this.btnImpDb);
+            this.Controls.Add(this.button5);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.fotoLaporan);
+            this.Controls.Add(this.btnRekapData);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
@@ -492,6 +551,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator1)).EndInit();
             this.bindingNavigator1.ResumeLayout(false);
             this.bindingNavigator1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.fotoLaporan)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -537,5 +597,10 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btnRekapData;
+        private System.Windows.Forms.PictureBox fotoLaporan;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button btnImpDb;
     }
 }
