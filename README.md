@@ -8,3 +8,56 @@ Form CRUD:
 > Read: <img width="1135" height="675" alt="WhatsApp Image 2026-04-20 at 06 02 17" src="https://github.com/user-attachments/assets/a90b5895-dee6-4511-bda4-b11850f8cb9b" />
 > Update: <img width="1137" height="675" alt="WhatsApp Image 2026-04-20 at 06 03 35" src="https://github.com/user-attachments/assets/a9f52815-df48-477b-8e1d-784b99d87999" />
 > Delete: <img width="1140" height="673" alt="image" src="https://github.com/user-attachments/assets/677be601-48e5-4ea1-840e-99d3ff9d6e09" />
+
+# Skenario SQL Injection pada Form Laporan
+## Form yang Diserang
+Form Laporan (Form2)
+## Lokasi Kerentanan
+Button Inject (`button4_Click_1`)
+
+Kode rentan:
+string query = "UPDATE Laporan SET deskripsi='HACKED' WHERE deskripsi='" + txtDeskripsi.Text + "'";
+
+## Penyebab Kerentanan
+Query SQL dibuat menggunakan penggabungan string (`string concatenation`) sehingga input pengguna langsung masuk ke query tanpa validasi atau parameterisasi.
+Hal ini memungkinkan penyerang menyisipkan perintah SQL tambahan (SQL Injection).
+
+# Simulasi Serangan SQL Injection
+## Input Penyerang
+
+Pada textbox `txtDeskripsi`, penyerang memasukkan:
+' OR 1=1 --
+
+## Query yang Terbentuk
+
+UPDATE Laporan 
+SET deskripsi='HACKED' 
+WHERE deskripsi='' OR 1=1 --'
+
+## Dampak Serangan
+Karena kondisi `OR 1=1` selalu bernilai TRUE, maka seluruh data pada tabel `Laporan` akan diubah menjadi:
+deskripsi = HACKED
+Akibatnya:
+* Semua laporan berubah
+* Integritas data rusak
+* Data asli hilang
+---
+
+# Dampak Keamanan
+SQL Injection dapat menyebabkan:
+* Manipulasi data
+* Penghapusan data
+* Pencurian data
+* Bypass login
+* Kerusakan database
+
+---
+# Cara Pencegahan
+
+Gunakan `Parameterized Query` agar input user tidak dianggap sebagai perintah SQL.
+Contoh aman:
+string query = "UPDATE Laporan SET deskripsi='HACKED' WHERE deskripsi=@desk";
+SqlCommand cmd = new SqlCommand(query, conn);
+cmd.Parameters.AddWithValue("@desk", txtDeskripsi.Text);
+
+Dengan parameterized query, input pengguna akan diperlakukan sebagai data biasa sehingga SQL Injection tidak dapat dilakukan.
